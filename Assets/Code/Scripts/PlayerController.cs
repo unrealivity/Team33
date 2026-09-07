@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -8,7 +9,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private InputActionAsset inputActionAsset;
     private InputAction _lookAction;
     private InputAction _moveAction;
-
+    private InputAction _jumpAction;
+    private InputAction _grabAction;
+    private InputAction _interactAction;
+    
+    
     [Header("Horizontal Movement")]
     [SerializeField] private float maxSpeed;
     [SerializeField] private float acceleration;
@@ -29,6 +34,9 @@ public class PlayerController : MonoBehaviour
     private float _mouseY;
     private float _rotationPitch;
     private float _rotationYaw;
+
+    private bool _mouseDown;
+    
     
     
     private LayerMask _playerLayer;
@@ -41,6 +49,8 @@ public class PlayerController : MonoBehaviour
     {   
         _moveAction = inputActionAsset.FindAction("Move");
         _lookAction = inputActionAsset.FindAction("Look");
+        _grabAction = inputActionAsset.FindAction("Grab");
+        _interactAction = inputActionAsset.FindAction("Interact");
         
         _rigidbody = GetComponent<Rigidbody>();
         _camera = GetComponentInChildren<Camera>();
@@ -56,6 +66,10 @@ public class PlayerController : MonoBehaviour
         //read mouse input
         _mouseX = _lookAction.ReadValue<Vector2>().x * mouseSensitivity * Time.deltaTime;
         _mouseY = _lookAction.ReadValue<Vector2>().y * mouseSensitivity * Time.deltaTime;
+
+        _mouseDown = (_grabAction.ReadValue<float>() > 0.5f);
+        
+        
         
         //calculate vertical camera rotation
         _rotationPitch -= _mouseY;
@@ -63,7 +77,10 @@ public class PlayerController : MonoBehaviour
         
         // pitch camera vertically
         _camera.transform.localRotation = Quaternion.Euler(_rotationPitch, 0f, 0f);
-        
+        if (_mouseDown)
+        {
+            Debug.Log("Mouse is Down!");  
+        }
 
     }
 
@@ -91,4 +108,10 @@ public class PlayerController : MonoBehaviour
         _rigidbody.AddForce(velocityChange,ForceMode.VelocityChange);
     }
 
+    private void OnLook(InputAction.CallbackContext context) 
+    {
+        _mouseX = _lookAction.ReadValue<Vector2>().x * mouseSensitivity * Time.deltaTime;
+        _mouseY = _lookAction.ReadValue<Vector2>().y * mouseSensitivity * Time.deltaTime;
+    }
+    
 }

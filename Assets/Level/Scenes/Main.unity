@@ -1054,8 +1054,8 @@ MonoBehaviour:
   acceleration: 5
   speedFactor: 4
   rideHeight: 1.2
-  rideSpringStrength: 200
-  rideSpringDamper: 50
+  rideSpringStrength: 600
+  rideSpringDamper: 140
   mouseSensitivity: 50
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
