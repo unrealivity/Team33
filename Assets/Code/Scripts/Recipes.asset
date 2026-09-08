@@ -12,4 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af7696dd1fa9eed4fabd2d5293d571fc, type: 3}
   m_Name: Recipes
   m_EditorClassIdentifier: Assembly-CSharp::Recipes
-  recipe: []
+  recipe:
+  - ingredient: 01000000
+    result: 1
+    cookingTime: 3
+  - ingredient: 0400000002000000
+    result: 3
+    cookingTime: 5
