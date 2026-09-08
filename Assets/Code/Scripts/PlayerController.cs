@@ -71,7 +71,10 @@ public class PlayerController : MonoBehaviour
     }
     private void GrabActionOnCanceled(InputAction.CallbackContext obj)
     {
-        _objectHeldInHand?.GetComponent<Grabbable>()?.Drop();
+        if (_objectHeldInHand != null)
+        {
+            _objectHeldInHand.GetComponent<Grabbable>()?.Drop();
+        }
         _objectHeldInHand = null;
     }
     private void GrabActionOnPerformed(InputAction.CallbackContext obj)
@@ -79,7 +82,7 @@ public class PlayerController : MonoBehaviour
         if (!ForwardRaycast(grabRange, _playerLayer, out RaycastHit grabHit)) return;
 
         _objectHeldInHand = grabHit.collider.gameObject;
-        _objectHeldInHand.GetComponent<Grabbable>()?.PickUp(_holdPoint,grabStrength,grabForceDamper);
+        _objectHeldInHand?.GetComponent<Grabbable>()?.PickUp(_holdPoint,grabStrength,grabForceDamper);
     }
     
 

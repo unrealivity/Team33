@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3154828376755634532}
   - component: {fileID: 8584245189057945311}
   - component: {fileID: 5519271302615728215}
+  - component: {fileID: -601506328093277447}
   m_Layer: 0
   m_Name: Zucker
   m_TagString: Untagged
@@ -156,3 +157,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Zutat
   zutat: 2
+--- !u!114 &-601506328093277447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6348899623753695617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0d0abd07c9ec2347bdaf42cddd98311, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Grabbable

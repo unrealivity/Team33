@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8747821285103980759}
   - component: {fileID: 7136513392732651813}
   - component: {fileID: 6991517144149295315}
+  - component: {fileID: -127049920634772823}
   m_Layer: 0
   m_Name: Pfirsich
   m_TagString: Untagged
@@ -154,3 +155,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-127049920634772823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7694298339892882775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0d0abd07c9ec2347bdaf42cddd98311, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Grabbable
