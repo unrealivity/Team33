@@ -563,7 +563,7 @@ GameObject:
   - component: {fileID: 532852903}
   - component: {fileID: 532852902}
   m_Layer: 5
-  m_Name: '"Sliced Peaches" (4)'
+  m_Name: '"Peach Jelly"'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -678,7 +678,7 @@ GameObject:
   - component: {fileID: 605029166}
   - component: {fileID: 605029165}
   m_Layer: 5
-  m_Name: '"Sliced Peaches" (3)'
+  m_Name: '"Sliced Peaches" (2)'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -753,7 +753,7 @@ GameObject:
   - component: {fileID: 620982382}
   - component: {fileID: 620982381}
   m_Layer: 5
-  m_Name: '"Sliced Peaches" (2)'
+  m_Name: '"Cooked Beans"'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -791,7 +791,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.47450984, b: 0.58591944, a: 1}
+  m_Color: {r: 1, g: 0.6417339, b: 0.47450984, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2581,7 +2581,7 @@ MonoBehaviour:
   rideHeight: 1.2
   rideSpringStrength: 600
   rideSpringDamper: 140
-  mouseSensitivity: 50
+  mouseSensitivity: 30
   interactionRange: 999
   grabRange: 9999
   grabStrength: 240
