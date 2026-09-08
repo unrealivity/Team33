@@ -1,7 +1,5 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour
 {
@@ -35,15 +33,22 @@ public class PlayerController : MonoBehaviour
     private float _rotationPitch;
     private float _rotationYaw;
 
-    private bool _mouseDown;
-    
-    
-    
+    [Header("Interaction Settings")]
+    [SerializeField] private float interactionRange;
+
+    [Header("Grab Settings")]
+    [SerializeField] private float grabRange;
+    [SerializeField] private float grabStrength;
+    [SerializeField] private float idealDistance;
+    [SerializeField] private float grabForceDamper;
+    [SerializeField] private GameObject holdPointGameObject;
+
+    private GameObject _objectHeldInHand;
     private LayerMask _playerLayer;
     private Rigidbody _rigidbody;
+
+    private Transform _holdPoint;
     
-
-
 
     private void Awake()
     {   
@@ -51,13 +56,38 @@ public class PlayerController : MonoBehaviour
         _lookAction = inputActionAsset.FindAction("Look");
         _grabAction = inputActionAsset.FindAction("Grab");
         _interactAction = inputActionAsset.FindAction("Interact");
+
+        _interactAction.performed += InteractPerformed; 
+        _grabAction.performed += GrabActionOnPerformed;
+        _grabAction.canceled += GrabActionOnCanceled;
         
         _rigidbody = GetComponent<Rigidbody>();
         _camera = GetComponentInChildren<Camera>();
         
         _playerLayer = LayerMask.GetMask("Default");
+        holdPointGameObject.transform.Translate(0,0,idealDistance);
+        _holdPoint = holdPointGameObject.transform;
+
     }
-    void Update()
+    private void GrabActionOnCanceled(InputAction.CallbackContext obj)
+    {
+        _objectHeldInHand?.GetComponent<Grabbable>()?.Drop();
+        _objectHeldInHand = null;
+    }
+    private void GrabActionOnPerformed(InputAction.CallbackContext obj)
+    {
+        if (!ForwardRaycast(grabRange, _playerLayer, out RaycastHit grabHit)) return;
+
+        _objectHeldInHand = grabHit.collider.gameObject;
+        _objectHeldInHand.GetComponent<Grabbable>()?.PickUp(_holdPoint,grabStrength,grabForceDamper);
+    }
+    
+
+    private void InteractPerformed(InputAction.CallbackContext ctx)
+    {
+        Debug.Log("Interact");
+    }
+    private void Update()
     {   
         //read movement input
         _forwardMovementValue = _moveAction.ReadValue<Vector2>().y;
@@ -66,9 +96,6 @@ public class PlayerController : MonoBehaviour
         //read mouse input
         _mouseX = _lookAction.ReadValue<Vector2>().x * mouseSensitivity * Time.deltaTime;
         _mouseY = _lookAction.ReadValue<Vector2>().y * mouseSensitivity * Time.deltaTime;
-
-        _mouseDown = (_grabAction.ReadValue<float>() > 0.5f);
-        
         
         
         //calculate vertical camera rotation
@@ -77,16 +104,14 @@ public class PlayerController : MonoBehaviour
         
         // pitch camera vertically
         _camera.transform.localRotation = Quaternion.Euler(_rotationPitch, 0f, 0f);
-        if (_mouseDown)
-        {
-            Debug.Log("Mouse is Down!");  
-        }
 
     }
 
     private void FixedUpdate()
-    {
-        bool raycastDidHit = Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out RaycastHit raycastHit, rideHeight, _playerLayer);
+    {   
+        
+        // raycast down to float capsule over floor
+        bool raycastDidHit = Physics.Raycast(transform.position, Vector3.down, out RaycastHit raycastHit, rideHeight, _playerLayer);
         if (raycastDidHit)
         {
             Vector3 velocity = _rigidbody.linearVelocity;
@@ -95,6 +120,7 @@ public class PlayerController : MonoBehaviour
             float springForce = (x * rideSpringStrength) - (relativeVelocity * rideSpringDamper);
             _rigidbody.AddForce(Vector3.down * springForce);
         }
+
         
         _rotationYaw += _mouseX;
         _rigidbody.MoveRotation(Quaternion.Euler(0f,_rotationYaw,0f));
@@ -108,10 +134,9 @@ public class PlayerController : MonoBehaviour
         _rigidbody.AddForce(velocityChange,ForceMode.VelocityChange);
     }
 
-    private void OnLook(InputAction.CallbackContext context) 
+    private bool ForwardRaycast(float rayLength, LayerMask layerMask, out RaycastHit hit)
     {
-        _mouseX = _lookAction.ReadValue<Vector2>().x * mouseSensitivity * Time.deltaTime;
-        _mouseY = _lookAction.ReadValue<Vector2>().y * mouseSensitivity * Time.deltaTime;
+        return Physics.Raycast(_camera.transform.position, _camera.transform.forward, out hit, rayLength, layerMask);
     }
     
 }
