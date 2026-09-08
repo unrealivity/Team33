@@ -381,9 +381,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac05d2bddf58ece48be3175d291e0535, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Kochen
-  recipeCollection: {fileID: 0}
-  spawnPoint: {fileID: 0}
-  foodPrefab: []
+  recipeCollection: {fileID: 11400000, guid: 0e9dbe40bdf0d5d43a72db02abe3a44c, type: 2}
+  spawnPoint: {fileID: 8118140914920305964}
+  foodPrefab:
+  - {fileID: 1710632172870240196, guid: c8fe97d5069c91c48a696591eb74812d, type: 3}
+  - {fileID: 5259370418402656631, guid: 3c3a97cddf27cfe4fa832294a85377ca, type: 3}
 --- !u!1 &4307565601103092227
 GameObject:
   m_ObjectHideFlags: 0

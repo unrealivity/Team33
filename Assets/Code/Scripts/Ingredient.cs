@@ -2,7 +2,7 @@ using UnityEngine;
 public enum IngredientType { // Liste aller Zutaten
     Empty,
     Bean,
-    Shugar,
+    Sugar,
     Peach,
     slicedPech
 }
