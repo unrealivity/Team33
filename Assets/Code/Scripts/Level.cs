@@ -6,13 +6,15 @@ using UnityEngine.Serialization;
 
 
 [Serializable]
-public class SerializablePair<T1, T2>
+public class SerializableTimedPair<T1, T2>
 {
-    public T1 dish;
-    public T2 timeUntilNextDish;
+    public T1 value;
+    public T2 timeInSeconds;
 }
 [Serializable]
-public class SubSection : SerializablePair<EssensTyp,int>{}
+public class SubSection : SerializableTimedPair<FoodType,int>{}
+
+
 
 [CreateAssetMenu(fileName = "Level", menuName = "Scriptable Objects/Level")]
 public class Level : ScriptableObject
