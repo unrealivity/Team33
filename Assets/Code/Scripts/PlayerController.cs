@@ -105,9 +105,10 @@ public class PlayerController : MonoBehaviour
         _rotationPitch -= _mouseY;
         _rotationPitch = Mathf.Clamp(_rotationPitch, -82f, 82f);
         
+        _rotationYaw += _mouseX;
+        
         // pitch camera vertically
-        _camera.transform.localRotation = Quaternion.Euler(_rotationPitch, 0f, 0f);
-
+        _camera.transform.localRotation = Quaternion.Euler(_rotationPitch, _rotationYaw, 0f);
     }
 
     private void FixedUpdate()
@@ -123,13 +124,10 @@ public class PlayerController : MonoBehaviour
             float springForce = (x * rideSpringStrength) - (relativeVelocity * rideSpringDamper);
             _rigidbody.AddForce(Vector3.down * springForce);
         }
-
         
-        _rotationYaw += _mouseX;
-        _rigidbody.MoveRotation(Quaternion.Euler(0f,_rotationYaw,0f));
-
-        
-        Vector3 targetDirection = (transform.forward * _forwardMovementValue + transform.right * _rightMovementValue).normalized;
+        var cameraForward = new Vector3(_camera.transform.forward.x,0,_camera.transform.forward.z);
+        var cameraRight = new Vector3(_camera.transform.right.x,0,_camera.transform.right.z) ;
+        Vector3 targetDirection = (cameraForward * _forwardMovementValue + cameraRight * _rightMovementValue).normalized;
         Vector3 targetMovement = targetDirection * maxSpeed;
         Vector3 velocityChange = targetMovement-(new Vector3(_rigidbody.linearVelocity.x,0,_rigidbody.linearVelocity.z));
         velocityChange = Vector3.ClampMagnitude(velocityChange,acceleration);
