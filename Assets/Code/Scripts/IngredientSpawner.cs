@@ -10,7 +10,7 @@ public class IngredientSpawner : MonoBehaviour
     
     [SerializeField] private List<Recipes> recipeListsPerStation ;
     [SerializeField] private List<IngredientPrefabPair> ingredientPrefabPairs;
-    
+    [SerializeField] private Transform spawnPoint;
     private void Awake()
     {
         GameController.requestIngredients += SpawnIngredientsForRecipe;
@@ -32,7 +32,7 @@ public class IngredientSpawner : MonoBehaviour
                     {
                         if (ingredientPrefabPair.ingredient == ingredientToSpawn)
                         {
-                            Instantiate(ingredientPrefabPair.prefab);
+                            Instantiate(ingredientPrefabPair.prefab,spawnPoint.position,spawnPoint.rotation);
                         }
                     }
                 }

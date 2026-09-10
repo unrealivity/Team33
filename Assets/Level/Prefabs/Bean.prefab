@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 281342953333543613}
   - component: {fileID: 3243440489739066665}
   - component: {fileID: 6801348043751070665}
-  - component: {fileID: 629680449216690787}
   - component: {fileID: 1028244020345083567}
   - component: {fileID: 3095592153709142913}
   - component: {fileID: -4742607940598439249}
+  - component: {fileID: -4341725445708719721}
   m_Layer: 0
   m_Name: Bean
   m_TagString: Untagged
@@ -44,7 +44,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7626197771280619689}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -9047139720726501597, guid: 7da9089427eb20643b91e87f3af7569b, type: 3}
 --- !u!23 &6801348043751070665
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -70,7 +70,9 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 3006275456500841750, guid: 7da9089427eb20643b91e87f3af7569b, type: 3}
+  - {fileID: 19861687850525789, guid: 7da9089427eb20643b91e87f3af7569b, type: 3}
+  - {fileID: -2502771991226602194, guid: 7da9089427eb20643b91e87f3af7569b, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -94,27 +96,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &629680449216690787
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7626197771280619689}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &1028244020345083567
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -154,7 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c8dbd9053e27f045a4b23652e71a6f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Zutat
-  zutat: 1
+  ingredient: 1
 --- !u!114 &-4742607940598439249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,4 +148,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0d0abd07c9ec2347bdaf42cddd98311, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Grabbable
-  ingredient: 1
+--- !u!64 &-4341725445708719721
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7626197771280619689}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -9047139720726501597, guid: 7da9089427eb20643b91e87f3af7569b, type: 3}
