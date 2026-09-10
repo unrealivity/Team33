@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [Serializable]
 
@@ -10,7 +11,7 @@ public class GameController : MonoBehaviour
     
     [SerializeField] private List<Level> gameLevels;
     private List<FoodType> _foodBacklog = new();
-    
+    public static event Action<FoodType> requestIngredients;
     private Level _currentLevel;
     private bool _currentLevelIsCleared;
 
@@ -39,9 +40,10 @@ public class GameController : MonoBehaviour
     
     private IEnumerator PlayLevel(Level levelToPlay)
     {
-        foreach (SubSection levelSection in levelToPlay.dishesToBeCooked)
+        foreach (DishTimePair levelSection in levelToPlay.dishesToBeCooked)
         {
-            _foodBacklog.Add(levelSection.value);
+            _foodBacklog.Add(levelSection.dishToCook);
+            requestIngredients?.Invoke(levelSection.dishToCook);
             yield return new WaitForSeconds(levelSection.timeInSeconds);
         }
         
