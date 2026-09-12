@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 
@@ -13,7 +11,7 @@ public class IngredientSpawner : MonoBehaviour
     [SerializeField] private Transform spawnPoint;
     private void Awake()
     {
-        GameController.requestIngredients += SpawnIngredientsForRecipe;
+        GameController.foodAddedToBacklog += SpawnIngredientsForRecipe;
     }
 
     private void SpawnIngredientsForRecipe(FoodType foodToSpawnIngredientsFor)
@@ -32,7 +30,7 @@ public class IngredientSpawner : MonoBehaviour
                     {
                         if (ingredientPrefabPair.ingredient == ingredientToSpawn)
                         {
-                            Instantiate(ingredientPrefabPair.prefab,spawnPoint.position,spawnPoint.rotation);
+                            Instantiate(ingredientPrefabPair.prefab,spawnPoint.position,spawnPoint.rotation,spawnPoint);
                         }
                     }
                 }

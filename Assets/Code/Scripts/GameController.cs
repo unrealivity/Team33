@@ -11,9 +11,15 @@ public class GameController : MonoBehaviour
     
     [SerializeField] private List<Level> gameLevels;
     private List<FoodType> _foodBacklog = new();
-    public static event Action<FoodType> requestIngredients;
+    public static event Action<FoodType> foodAddedToBacklog;
+    public static event Action<FoodType> foodDelivered; 
+    public static event Action<int> levelTimerInSeconds;
+    
+    
     private Level _currentLevel;
     private bool _currentLevelIsCleared;
+
+
 
     private void Start()
     {
@@ -43,7 +49,7 @@ public class GameController : MonoBehaviour
         foreach (DishTimePair levelSection in levelToPlay.dishesToBeCooked)
         {
             _foodBacklog.Add(levelSection.dishToCook);
-            requestIngredients?.Invoke(levelSection.dishToCook);
+            foodAddedToBacklog?.Invoke(levelSection.dishToCook);
             yield return new WaitForSeconds(levelSection.timeInSeconds);
         }
         

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5519271302615728215}
   - component: {fileID: -601506328093277447}
   - component: {fileID: -4885859532613265091}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sugar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!114 &5519271302615728215
 MonoBehaviour:
   m_ObjectHideFlags: 0

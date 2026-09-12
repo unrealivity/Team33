@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float rideHeight;
     [SerializeField] private float rideSpringStrength;
     [SerializeField] private float rideSpringDamper;
+    [SerializeField] private LayerMask floatRaycastLayer;
     
     [Header("View Settings")]
     [SerializeField] private float mouseSensitivity;
@@ -42,6 +43,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float idealDistance;
     [SerializeField] private float grabForceDamper;
     [SerializeField] private GameObject holdPointGameObject;
+    [SerializeField] private LayerMask grabRaycastLayer;
 
     private GameObject _objectHeldInHand;
     private LayerMask _playerLayer;
@@ -79,7 +81,7 @@ public class PlayerController : MonoBehaviour
     }
     private void GrabActionOnPerformed(InputAction.CallbackContext obj)
     {
-        if (!ForwardRaycast(grabRange, _playerLayer, out RaycastHit grabHit)) return;
+        if (!ForwardRaycast(grabRange, grabRaycastLayer, out RaycastHit grabHit)) return;
 
         _objectHeldInHand = grabHit.collider.gameObject;
         _objectHeldInHand?.GetComponent<Grabbable>()?.PickUp(_holdPoint,grabStrength,grabForceDamper);
@@ -115,7 +117,7 @@ public class PlayerController : MonoBehaviour
     {   
         
         // raycast down to float capsule over floor
-        bool raycastDidHit = Physics.Raycast(transform.position, Vector3.down, out RaycastHit raycastHit, rideHeight, _playerLayer);
+        bool raycastDidHit = Physics.Raycast(transform.position, Vector3.down, out RaycastHit raycastHit, rideHeight, floatRaycastLayer);
         if (raycastDidHit)
         {
             Vector3 velocity = _rigidbody.linearVelocity;
