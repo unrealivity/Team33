@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3914403070917802648}
   - component: {fileID: 6021340239672550607}
   - component: {fileID: -8645729972858523494}
-  - component: {fileID: -3150291925279939538}
+  - component: {fileID: 5338654198696465648}
   m_Layer: 6
   m_Name: slicedPeach
   m_TagString: Untagged
@@ -133,7 +133,7 @@ Rigidbody:
   serializedVersion: 5
   m_Mass: 1
   m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_AngularDamping: 3.69
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -147,7 +147,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 3
 --- !u!114 &-8645729972858523494
@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0d0abd07c9ec2347bdaf42cddd98311, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Grabbable
---- !u!64 &-3150291925279939538
+--- !u!64 &5338654198696465648
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

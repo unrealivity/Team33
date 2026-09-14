@@ -8,17 +8,18 @@ public class Grabbable : MonoBehaviour
     private bool _isHeld;
     private float _grabForce;
     private float _forceDamper;
-
+    private float _maxFollowForce;
     
 
     private void Awake() => _rigidbody = GetComponent<Rigidbody>();
 
-    public void PickUp(Transform holdTarget, float grabForce, float grabForceDamper)
+    public void PickUp(Transform holdTarget, float grabForce, float grabForceDamper, float maxFollowForce)
     {
         _holdTarget = holdTarget;
         _isHeld = true;
         _grabForce = grabForce;
         _forceDamper = grabForceDamper;
+        _maxFollowForce = maxFollowForce;
     }
 
     public void Drop()
@@ -30,7 +31,13 @@ public class Grabbable : MonoBehaviour
     private void FixedUpdate()
     {
         if (!_isHeld) return;
-        var x = _holdTarget.position - _rigidbody.position;
-        _rigidbody.AddForce((x*_grabForce)-(_rigidbody.linearVelocity*_forceDamper));
+        
+        Vector3 toTarget = _holdTarget.position - _rigidbody.position;
+        Vector3 velocityError = -_rigidbody.linearVelocity;
+        
+        Vector3 force = (toTarget * _grabForce) + (velocityError * _forceDamper);
+        force = Vector3.ClampMagnitude(force, _maxFollowForce);
+        
+        _rigidbody.AddForce(force, ForceMode.Acceleration);
     }
 }

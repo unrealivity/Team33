@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float grabStrength;
     [SerializeField] private float idealDistance;
     [SerializeField] private float grabForceDamper;
+    [SerializeField] private float maxFollowForce;
     [SerializeField] private GameObject holdPointGameObject;
     [SerializeField] private LayerMask grabRaycastLayer;
 
@@ -84,7 +85,7 @@ public class PlayerController : MonoBehaviour
         if (!ForwardRaycast(grabRange, grabRaycastLayer, out RaycastHit grabHit)) return;
 
         _objectHeldInHand = grabHit.collider.gameObject;
-        _objectHeldInHand?.GetComponent<Grabbable>()?.PickUp(_holdPoint,grabStrength,grabForceDamper);
+        _objectHeldInHand?.GetComponent<Grabbable>()?.PickUp(_holdPoint,grabStrength,grabForceDamper,maxFollowForce);
     }
     
 
