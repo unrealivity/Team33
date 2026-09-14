@@ -11,7 +11,7 @@ public class IngredientSpawner : MonoBehaviour
     [SerializeField] private Transform spawnPoint;
     private void Awake()
     {
-        GameController.foodAddedToBacklog += SpawnIngredientsForRecipe;
+        GameController.FoodAddedToBacklog += SpawnIngredientsForRecipe;
     }
 
     private void SpawnIngredientsForRecipe(FoodType foodToSpawnIngredientsFor)

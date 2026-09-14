@@ -2,18 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-
-[Serializable]
 
 public class GameController : MonoBehaviour
 {
     
     [SerializeField] private List<Level> gameLevels;
     private List<FoodType> _foodBacklog = new();
-    public static event Action<FoodType> foodAddedToBacklog;
-    public static event Action<FoodType> foodDelivered; 
-    public static event Action<int> levelTimerInSeconds;
+    public static event Action<FoodType> FoodAddedToBacklog;
+    public static event Action<FoodType> FindCookedFood; 
+    public static event Action<int> DishTimerInSeconds;
     
     
     private Level _currentLevel;
@@ -49,8 +46,11 @@ public class GameController : MonoBehaviour
         foreach (DishTimePair levelSection in levelToPlay.dishesToBeCooked)
         {
             _foodBacklog.Add(levelSection.dishToCook);
-            foodAddedToBacklog?.Invoke(levelSection.dishToCook);
+            FoodAddedToBacklog?.Invoke(levelSection.dishToCook);
+            DishTimerInSeconds?.Invoke(levelSection.timeInSeconds);
             yield return new WaitForSeconds(levelSection.timeInSeconds);
+            FindCookedFood?.Invoke(levelSection.dishToCook);
+            
         }
         
         

@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Interaction Settings")]
     [SerializeField] private float interactionRange;
+    [SerializeField] private LayerMask interactionLayer;
 
     [Header("Grab Settings")]
     [SerializeField] private float grabRange;
@@ -47,11 +48,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask grabRaycastLayer;
 
     private GameObject _objectHeldInHand;
-    private LayerMask _playerLayer;
     private Rigidbody _rigidbody;
 
     private Transform _holdPoint;
-    
+
 
     private void Awake()
     {   
@@ -67,7 +67,6 @@ public class PlayerController : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         _camera = GetComponentInChildren<Camera>();
         
-        _playerLayer = LayerMask.GetMask("Default");
         holdPointGameObject.transform.Translate(0,0,idealDistance);
         _holdPoint = holdPointGameObject.transform;
 
@@ -116,7 +115,26 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {   
-        
+        FloatCapsule();
+        Vector3 velocityChange = CalculateVelocityChange();
+
+        _rigidbody.AddForce(velocityChange,ForceMode.VelocityChange);
+    }
+
+    
+    private Vector3 CalculateVelocityChange()
+    {
+        var cameraForward = new Vector3(_camera.transform.forward.x,0,_camera.transform.forward.z);
+        var cameraRight = new Vector3(_camera.transform.right.x,0,_camera.transform.right.z) ;
+        Vector3 targetDirection = (cameraForward * _forwardMovementValue + cameraRight * _rightMovementValue).normalized;
+        Vector3 targetMovement = targetDirection * maxSpeed;
+        Vector3 velocityChange = targetMovement-(new Vector3(_rigidbody.linearVelocity.x,0,_rigidbody.linearVelocity.z));
+        velocityChange = Vector3.ClampMagnitude(velocityChange,acceleration);
+        return velocityChange;
+    }
+
+    private void FloatCapsule()
+    {   
         // raycast down to float capsule over floor
         bool raycastDidHit = Physics.Raycast(transform.position, Vector3.down, out RaycastHit raycastHit, rideHeight, floatRaycastLayer);
         if (raycastDidHit)
@@ -127,15 +145,6 @@ public class PlayerController : MonoBehaviour
             float springForce = (x * rideSpringStrength) - (relativeVelocity * rideSpringDamper);
             _rigidbody.AddForce(Vector3.down * springForce);
         }
-        
-        var cameraForward = new Vector3(_camera.transform.forward.x,0,_camera.transform.forward.z);
-        var cameraRight = new Vector3(_camera.transform.right.x,0,_camera.transform.right.z) ;
-        Vector3 targetDirection = (cameraForward * _forwardMovementValue + cameraRight * _rightMovementValue).normalized;
-        Vector3 targetMovement = targetDirection * maxSpeed;
-        Vector3 velocityChange = targetMovement-(new Vector3(_rigidbody.linearVelocity.x,0,_rigidbody.linearVelocity.z));
-        velocityChange = Vector3.ClampMagnitude(velocityChange,acceleration);
-        
-        _rigidbody.AddForce(velocityChange,ForceMode.VelocityChange);
     }
 
     private bool ForwardRaycast(float rayLength, LayerMask layerMask, out RaycastHit hit)

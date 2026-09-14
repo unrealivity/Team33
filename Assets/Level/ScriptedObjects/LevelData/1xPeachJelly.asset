@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Level
   dishesToBeCooked:
   - dishToCook: 3
-    timeInSeconds: 0
+    timeInSeconds: 1
   isTimed: 1
   timeForLevel: 12
   difficulty: 1

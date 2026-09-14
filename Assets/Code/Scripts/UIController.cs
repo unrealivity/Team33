@@ -5,7 +5,7 @@ public class UIController : MonoBehaviour
 {
     private void Awake()
     {
-        GameController.foodAddedToBacklog += AddToToDoList;
+        GameController.FoodAddedToBacklog += AddToToDoList;
     }
 
     private void AddToToDoList(FoodType foodType)
