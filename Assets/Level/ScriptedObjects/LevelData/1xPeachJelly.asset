@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Level
   dishesToBeCooked:
   - dishToCook: 3
-    timeInSeconds: 20
+    timeInSeconds: 25
   - dishToCook: 3
-    timeInSeconds: 30
+    timeInSeconds: 35
   - dishToCook: 3
-    timeInSeconds: 40
+    timeInSeconds: 45
   isTimed: 1
   timeForLevel: 35
-  difficulty: 1
+  difficulty: 4

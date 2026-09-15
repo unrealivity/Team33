@@ -7,7 +7,6 @@ public class GameController : MonoBehaviour
 {
     
     [SerializeField] private List<Level> gameLevels;
-    private List<FoodType> _foodBacklog = new();
     public static event Action<FoodType,int> FoodAddedToBacklog;
     public static event Action<FoodType> FindCookedFood; 
 
@@ -45,7 +44,6 @@ public class GameController : MonoBehaviour
     {
         foreach (DishTimePair levelSection in levelToPlay.dishesToBeCooked)
         {
-            _foodBacklog.Add(levelSection.dishToCook);
             FoodAddedToBacklog?.Invoke(levelSection.dishToCook,levelSection.timeInSeconds);
             StartCoroutine(TimeDish(levelSection.dishToCook,levelSection.timeInSeconds));
         }
