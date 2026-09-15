@@ -5,11 +5,13 @@ public class Cooking : MonoBehaviour {
     [SerializeField] private Recipes recipeCollection;                 // Platz für Recipe script
     [SerializeField] private Transform spawnPoint;                     // Spawn für fertiges Food
     [SerializeField] private List<GameObject> foodPrefab;              // Prefabs von Spawnbarem
+    [SerializeField] private GameObject foodContainerParent;           // GameObject that parents instantiated foods
     
     private List<Ingredient> _ingredientsInPot = new List<Ingredient>();          // Liste Objekte im Topf
     private List<Ingredient> _ingredientsInUse = new List<Ingredient>();          // Liste Verwendung für Cooking
     private Recipes.Recipe _activRecipe;                                          // Für Cooking aktives Recipe
     private float _timer;                                                         // Timer für Abgleich beim Cooking
+
     private void OnTriggerEnter(Collider other) {                                 // Wenn etwas rein fällt
         Debug.Log("TRIGGER FOUND : " + other.gameObject.name);         
         Ingredient ingredient = other.GetComponent<Ingredient>();                 // Hohl das Zutaten Script vom Objekt
@@ -90,7 +92,7 @@ public class Cooking : MonoBehaviour {
         foreach (GameObject prefab in foodPrefab) {                                                    // Für jedes Objekt im foodPrefab ...
             Food food = prefab.GetComponent<Food>();                                                 // ... hohl dir die Informationen aus Food
             if (food != null && food.food == finishedRecipe.result) {                           // Wenn das prefab ein Food ist und egebenis eines Rezepts ...
-                GameObject newFood = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);  // ... erzeuge das Objekt am SpawnPunkt ...
+                GameObject newFood = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation,foodContainerParent.transform);  // ... erzeuge das Objekt am SpawnPunkt ...
                 Rigidbody rigid = newFood.GetComponent<Rigidbody>();                                 // ... hohl dir den Rigidbody des neuen Essens
 
                 if (rigid != null) {                                             // Wenn es einen Body hat ...

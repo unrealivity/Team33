@@ -14,7 +14,8 @@ public class IngredientSpawner : MonoBehaviour
         GameController.FoodAddedToBacklog += SpawnIngredientsForRecipe;
     }
 
-    private void SpawnIngredientsForRecipe(FoodType foodToSpawnIngredientsFor)
+
+    private void SpawnIngredientsForRecipe(FoodType foodToSpawnIngredientsFor,int timeToFinishDish)
     {
         
         foreach (Recipes stationRecipes in recipeListsPerStation)

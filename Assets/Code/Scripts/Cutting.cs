@@ -21,6 +21,8 @@ public class Cutting : MonoBehaviour {
     [SerializeField] private GameObject CutIndicator;
     [SerializeField] private Camera PlayerCamera;
     [SerializeField] private float InteractionRange = 3f;
+    [SerializeField] private GameObject foodContainerParent;           // GameObject that parents instantiated foods
+
 
     private void OnTriggerEnter(Collider other) {
         Ingredient ingredient = other.GetComponent<Ingredient>();
@@ -91,7 +93,7 @@ public class Cutting : MonoBehaviour {
         foreach (GameObject prefab in FoodPrefab) {
             Food food = prefab.GetComponent<Food>();
             if (food != null && food.food == recipe.result) {
-                GameObject newFood = Instantiate(prefab, SpawnPoint.position, SpawnPoint.rotation);
+                GameObject newFood = Instantiate(prefab, SpawnPoint.position, SpawnPoint.rotation,foodContainerParent.transform);
                 Rigidbody rigid = newFood.GetComponent<Rigidbody>();
 
                 if (rigid != null) {

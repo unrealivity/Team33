@@ -8,9 +8,9 @@ public class GameController : MonoBehaviour
     
     [SerializeField] private List<Level> gameLevels;
     private List<FoodType> _foodBacklog = new();
-    public static event Action<FoodType> FoodAddedToBacklog;
+    public static event Action<FoodType,int> FoodAddedToBacklog;
     public static event Action<FoodType> FindCookedFood; 
-    public static event Action<int> DishTimerInSeconds;
+
     
     
     private Level _currentLevel;
@@ -25,37 +25,36 @@ public class GameController : MonoBehaviour
 
     private IEnumerator PlayGame()
     {
-        foreach (var level in gameLevels)
+        foreach (Level level in gameLevels)
         {
             if (level.isTimed)
             {
-                StartCoroutine(PlayLevel(level));
+                PlayLevel(level);
                 yield return new WaitForSeconds(level.timeForLevel);
             }
             else
             {
-                StartCoroutine(PlayLevel(level));
+                PlayLevel(level);
                 yield return new WaitUntil(() => _currentLevelIsCleared);
             }
         }
     }
     
     
-    private IEnumerator PlayLevel(Level levelToPlay)
+    private void PlayLevel(Level levelToPlay)
     {
         foreach (DishTimePair levelSection in levelToPlay.dishesToBeCooked)
         {
             _foodBacklog.Add(levelSection.dishToCook);
-            FoodAddedToBacklog?.Invoke(levelSection.dishToCook);
-            DishTimerInSeconds?.Invoke(levelSection.timeInSeconds);
-            yield return new WaitForSeconds(levelSection.timeInSeconds);
-            FindCookedFood?.Invoke(levelSection.dishToCook);
-            
+            FoodAddedToBacklog?.Invoke(levelSection.dishToCook,levelSection.timeInSeconds);
+            StartCoroutine(TimeDish(levelSection.dishToCook,levelSection.timeInSeconds));
         }
         
-        
-        
     }
-
+    private IEnumerator TimeDish(FoodType foodToCook, int timeToCook)
+    {
+        yield return new WaitForSeconds(timeToCook);
+        FindCookedFood?.Invoke(foodToCook);
+    }
 
 }
