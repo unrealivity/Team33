@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1848633930225821347}
   - component: {fileID: -7070423688428357900}
   - component: {fileID: -377028680521425637}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: PeachCompote
   m_TagString: Untagged
   m_Icon: {fileID: 0}

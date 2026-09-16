@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3095592153709142913}
   - component: {fileID: -4742607940598439249}
   - component: {fileID: -4341725445708719721}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Bean
   m_TagString: Untagged
   m_Icon: {fileID: 0}
