@@ -9,7 +9,7 @@ public class Cooking : MonoBehaviour {
     
     private List<Ingredient> _ingredientsInPot = new List<Ingredient>();          // Liste Objekte im Topf
     private List<Ingredient> _ingredientsInUse = new List<Ingredient>();          // Liste Verwendung für Cooking
-    private Recipes.Recipe _activRecipe;                                          // Für Cooking aktives Recipe
+    private Recipes.Recipe _activeRecipe;                                          // Für Cooking aktives Recipe
     private float _timer;                                                         // Timer für Abgleich beim Cooking
 
     private void OnTriggerEnter(Collider other) {                                 // Wenn etwas rein fällt
@@ -29,7 +29,7 @@ public class Cooking : MonoBehaviour {
         
         if (ingredient != null) {                                // Wenn es eine Ingredient ist...
             _ingredientsInPot.Remove(ingredient);                   // ... entferne sie aus dem Topf ...
-            _activRecipe = null;                                    // ... entferne aktives Recipe ...
+            _activeRecipe = null;                                    // ... entferne aktives Recipe ...
             _timer = 0;                                             // ... setze den Timer auf null
             
             CheckRecipe();
@@ -40,26 +40,26 @@ public class Cooking : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (_activRecipe != null) {                       // Wenn Recipe aktiv ist ...
+        if (_activeRecipe != null) {                       // Wenn Recipe aktiv ist ...
             _timer += Time.deltaTime;                     // ... erhöhe den Timer ...
-            if (_timer >= _activRecipe.cookingTime) {     // ... wenn Timer fertig ...
+            if (_timer >= _activeRecipe.prepareValue) {     // ... wenn Timer fertig ...
                 CookingDone();                            // ... führe CookingDone aus
             }
         }
     }
 
     private void CheckRecipe() {                                       
-        _activRecipe = null;                                          
+        _activeRecipe = null;                                          
         _timer = 0;                                                     
         _ingredientsInUse.Clear();                                     
 
-        foreach (Recipes.Recipe recipe in recipeCollection.recipe) {                    // für jedes Recipe in Sammlung
+        foreach (Recipes.Recipe recipe in recipeCollection.recipeList) {                    // für jedes Recipe in Sammlung
             List<Ingredient> freeIngredient = new List<Ingredient>(_ingredientsInPot);  // kopiere ingredient im Topf in freie Zutaten
             List<Ingredient> found = new List<Ingredient>();                            // Speichere die Zutaten die zum Recipe passen
             
             bool match = true;                                                          // Bestätige das Recipe und Zutaten passen
 
-            foreach (IngredientType used in recipe.ingredient) {                                 // Für jede benötigte Ingredient 
+            foreach (ItemType used in recipe.ingredients) {                                 // Für jede benötigte Ingredient 
                 Ingredient matchingIngredient = freeIngredient.Find(z => z.ingredient == used); // Finde die Ingredient
                 
                 if (matchingIngredient == null) {            // Wenn keine passende Ingredient...
@@ -70,7 +70,7 @@ public class Cooking : MonoBehaviour {
                 freeIngredient.Remove(matchingIngredient);      // und entferne freie Ingredient aus der Prüfliste
             }
             if (match) {                                        // Wenn es passt ...
-                _activRecipe = recipe;                            
+                _activeRecipe = recipe;                            
                 _ingredientsInUse = found;
                 Debug.Log("FOUND RECEPIE " + recipe.result);
                 return;
@@ -79,8 +79,8 @@ public class Cooking : MonoBehaviour {
     }
 
     private void CookingDone() {                           
-        Recipes.Recipe finishedRecipe = _activRecipe;
-        _activRecipe = null;
+        Recipes.Recipe finishedRecipe = _activeRecipe;
+        _activeRecipe = null;
         _timer = 0;
 
         foreach (Ingredient ingredient in _ingredientsInUse) {      // Für jede Ingredient in verwendete Zutaten ...
@@ -91,7 +91,7 @@ public class Cooking : MonoBehaviour {
         
         foreach (GameObject prefab in foodPrefab) {                                                    // Für jedes Objekt im foodPrefab ...
             Food food = prefab.GetComponent<Food>();                                                 // ... hohl dir die Informationen aus Food
-            if (food != null && food.food == finishedRecipe.result) {                           // Wenn das prefab ein Food ist und egebenis eines Rezepts ...
+            if (food != null && food.foodType == finishedRecipe.result) {                           // Wenn das prefab ein Food ist und egebenis eines Rezepts ...
                 GameObject newFood = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation,foodContainerParent.transform);  // ... erzeuge das Objekt am SpawnPunkt ...
                 Rigidbody rigid = newFood.GetComponent<Rigidbody>();                                 // ... hohl dir den Rigidbody des neuen Essens
 

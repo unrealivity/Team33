@@ -12,7 +12,7 @@ public class FoodCollector : MonoBehaviour
     private Rigidbody _currentFoodRigidbody;
     private bool _collecting;
     [SerializeField] private float bufferDistance;
-    public static event Action<FoodType> FoodNotFound;
+    public static event Action<ItemType> FoodNotFound;
 
 
 
@@ -21,11 +21,11 @@ public class FoodCollector : MonoBehaviour
         GameController.FindCookedFood += TryToFindFood;
     }
 
-    private void TryToFindFood(FoodType foodTypeToCollect)
+    private void TryToFindFood(ItemType foodTypeToCollect)
     {
         foreach (var food in foodSection.GetComponentsInChildren<Food>())
         {
-            if (food.food != foodTypeToCollect) continue;
+            if (food.foodType != foodTypeToCollect) continue;
             if (food.isClaimed) continue;
 
             food.isClaimed = true;

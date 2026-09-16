@@ -2,14 +2,9 @@ using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public enum FoodType { // Liste aller Gerichte
-    Empty,
-    BeanStew,
-    slicedPeach,
-    PeachCompote
-   }
+
 public class Food : MonoBehaviour {
-    public FoodType food;
+    public ItemType foodType;
     private bool _collecting;
     private Rigidbody _rigidbody;
     private float _collectForce;
@@ -17,7 +12,7 @@ public class Food : MonoBehaviour {
     private float _maxCollectForce;
     private Vector3 _targetPosition;
     private float _bufferDistance;
-    public static event Action<FoodType> FoodCollected;
+    public static event Action<ItemType> FoodCollected;
     internal bool isClaimed;
 
     private void Awake()
@@ -52,7 +47,7 @@ public class Food : MonoBehaviour {
         _rigidbody.AddForce(force, ForceMode.Acceleration);
 
         if ((_rigidbody.position - _targetPosition).sqrMagnitude > _bufferDistance) return;
-        FoodCollected?.Invoke(food);
+        FoodCollected?.Invoke(foodType);
         Destroy(gameObject);
         _collecting = false;
     }

@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: 2xBeanStew
   m_EditorClassIdentifier: Assembly-CSharp::Level
   dishesToBeCooked:
-  - dishToCook: 1
-    timeInSeconds: 25
-  - dishToCook: 2
-    timeInSeconds: 30
+  - dishToCook: 5
+    timeInSeconds: 40
+  - dishToCook: 5
+    timeInSeconds: 50
   isTimed: 1
-  timeForLevel: 29
-  difficulty: 1
+  timeUntilNextLevelAppears: 40
+  difficulty: 4

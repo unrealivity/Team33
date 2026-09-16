@@ -8,15 +8,12 @@ public class Recipes : ScriptableObject
 {
     [System.Serializable]
     public class Recipe {
-        public List<IngredientType> ingredient; // Liste für eingang ingredient
-        public FoodType result;                // ausgang food
-        public float cookingTime;               // Zahlenwert für Kochdauer
+        public List<ItemType> ingredients; // Liste für eingang ingredient
+        public ItemType result;                // ausgang food
+        public float prepareValue;               // Zahlenwert für Kochdauer/Schnittanzahl etc
     }
     
-    public List<Recipe> recipe;                 // Weitere Recipes
-    public IEnumerator GetEnumerator()
-    {
-        throw new System.NotImplementedException();
-    }
+    public List<Recipe> recipeList;                 // Weitere Recipes
+ 
 }
 

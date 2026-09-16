@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af7696dd1fa9eed4fabd2d5293d571fc, type: 3}
   m_Name: Pot-Recipes
   m_EditorClassIdentifier: Assembly-CSharp::Recipes
-  recipe:
-  - ingredient: 01000000
-    result: 1
-    cookingTime: 3
-  - ingredient: 0400000002000000
-    result: 3
-    cookingTime: 5
+  recipeList:
+  - ingredients: 0100000001000000
+    result: 5
+    prepareValue: 3
+  - ingredients: 0200000004000000
+    result: 6
+    prepareValue: 4

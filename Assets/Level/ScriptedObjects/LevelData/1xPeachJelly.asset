@@ -13,12 +13,8 @@ MonoBehaviour:
   m_Name: 1xPeachJelly
   m_EditorClassIdentifier: Assembly-CSharp::Level
   dishesToBeCooked:
-  - dishToCook: 3
-    timeInSeconds: 25
-  - dishToCook: 3
-    timeInSeconds: 35
-  - dishToCook: 3
-    timeInSeconds: 45
+  - dishToCook: 6
+    timeInSeconds: 30
   isTimed: 1
-  timeForLevel: 35
-  difficulty: 4
+  timeUntilNextLevelAppears: 25
+  difficulty: 3

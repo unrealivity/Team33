@@ -2,35 +2,30 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class Cutting : MonoBehaviour {
     
     private Ingredient _ingredientOnBoard;
     private int _clicks = 0;
     
-    [System.Serializable]
-    public class CuttingRecipe {
-        public IngredientType ingredient;
-        public FoodType result;
-        public int neededClicks;
-    }
 
-    [SerializeField] private List<CuttingRecipe> Recipe;
-    [SerializeField] private List<GameObject> FoodPrefab;
-    [SerializeField] private Transform SpawnPoint;
-    [SerializeField] private GameObject CutIndicator;
-    [SerializeField] private Camera PlayerCamera;
-    [SerializeField] private float InteractionRange = 3f;
+    [SerializeField] private Recipes recipeCollection;
+    [SerializeField] private List<GameObject> foodPrefab;
+    [SerializeField] private Transform spawnPoint;
+    [SerializeField] private GameObject cutIndicator;
+    [SerializeField] private Camera playerCamera;
+    [SerializeField] private float interactionRange = 3f;
     [SerializeField] private GameObject foodContainerParent;           // GameObject that parents instantiated foods
 
 
     private void OnTriggerEnter(Collider other) {
         Ingredient ingredient = other.GetComponent<Ingredient>();
         if (ingredient != null) {
-            foreach (CuttingRecipe recipe in Recipe) {
-                if (recipe.ingredient == ingredient.ingredient) {
+            foreach (Recipes.Recipe recipe in recipeCollection.recipeList) {
+                if (recipe.ingredients[0] == ingredient.ingredient) {
                     _ingredientOnBoard = ingredient;
-                    CutIndicator.SetActive(true);
+                    cutIndicator.SetActive(true);
                     Debug.Log("ON BOARD " + ingredient.ingredient);
                     return;
                 }
@@ -43,7 +38,7 @@ public class Cutting : MonoBehaviour {
         if (ingredient != null && ingredient == _ingredientOnBoard) {
             _ingredientOnBoard = null;
             _clicks = 0;
-            CutIndicator.SetActive(false);
+            cutIndicator.SetActive(false);
             Debug.Log("OFF BOARD");
         }
     }
@@ -68,12 +63,12 @@ public class Cutting : MonoBehaviour {
             return;
         }
 
-        foreach (CuttingRecipe recipe in Recipe) {
-            if (recipe.ingredient == _ingredientOnBoard.ingredient) {
+        foreach (Recipes.Recipe recipe in recipeCollection.recipeList) {
+            if (recipe.ingredients[0] == _ingredientOnBoard.ingredient) {
                 _clicks++;
-                Debug.Log("CUTTING" + _clicks + " / " + recipe.neededClicks);
+                Debug.Log("CUTTING" + _clicks + " / " + recipe.prepareValue);
 
-                if (_clicks >= recipe.neededClicks) {
+                if (_clicks >= recipe.prepareValue) {
                     CuttingDone(recipe);
                 }
 
@@ -82,18 +77,18 @@ public class Cutting : MonoBehaviour {
         }
     }
 
-    private void CuttingDone(CuttingRecipe recipe) {
+    private void CuttingDone(Recipes.Recipe recipe) {
         Ingredient oldIngredient = _ingredientOnBoard;
 
         _ingredientOnBoard = null;
         _clicks = 0;
-        CutIndicator.SetActive(false);
+        cutIndicator.SetActive(false);
         
         Destroy(oldIngredient.gameObject);
-        foreach (GameObject prefab in FoodPrefab) {
+        foreach (GameObject prefab in foodPrefab) {
             Food food = prefab.GetComponent<Food>();
-            if (food != null && food.food == recipe.result) {
-                GameObject newFood = Instantiate(prefab, SpawnPoint.position, SpawnPoint.rotation,foodContainerParent.transform);
+            if (food != null && food.foodType == recipe.result) {
+                GameObject newFood = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation,foodContainerParent.transform);
                 Rigidbody rigid = newFood.GetComponent<Rigidbody>();
 
                 if (rigid != null) {
@@ -110,7 +105,7 @@ public class Cutting : MonoBehaviour {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        CutIndicator.SetActive(false);
+        cutIndicator.SetActive(false);
     }
 
     // Update is called once per frame
@@ -118,10 +113,10 @@ public class Cutting : MonoBehaviour {
     {
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame) {
             RaycastHit hit;
-            if (Physics.Raycast(PlayerCamera.transform.position, 
-                    PlayerCamera.transform.forward, 
-                    out hit, InteractionRange)) {
-                if (hit.collider.gameObject == CutIndicator) {
+            if (Physics.Raycast(playerCamera.transform.position, 
+                    playerCamera.transform.forward, 
+                    out hit, interactionRange)) {
+                if (hit.collider.gameObject == cutIndicator) {
                     Cut();
                 }
             }

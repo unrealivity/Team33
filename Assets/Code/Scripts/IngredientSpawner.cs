@@ -7,7 +7,7 @@ public class IngredientSpawner : MonoBehaviour
 {   
     
     [SerializeField] private List<Recipes> recipeListsPerStation ;
-    [SerializeField] private List<IngredientPrefabPair> ingredientPrefabPairs;
+    [SerializeField] private List<ItemPrefabPair> ingredientPrefabPairs;
     [SerializeField] private Transform spawnPoint;
     private void Awake()
     {
@@ -15,29 +15,63 @@ public class IngredientSpawner : MonoBehaviour
     }
 
 
-    private void SpawnIngredientsForRecipe(FoodType foodToSpawnIngredientsFor,int timeToFinishDish)
+    private void SpawnIngredientsForRecipe(ItemType foodToSpawnIngredientsFor,int timeToFinishDish)
     {
-        
-        foreach (Recipes stationRecipes in recipeListsPerStation)
+        if(!TryToFindRecipeFor(foodToSpawnIngredientsFor))
         {
-            foreach (var foodResult in stationRecipes.recipe)
-            {
-                
-                if (foodResult.result != foodToSpawnIngredientsFor) continue;
-                
-                foreach (IngredientType ingredientToSpawn in foodResult.ingredient)
-                {
-                    foreach (IngredientPrefabPair ingredientPrefabPair in ingredientPrefabPairs)
-                    {
-                        if (ingredientPrefabPair.ingredient == ingredientToSpawn)
-                        {
-                            Instantiate(ingredientPrefabPair.prefab,spawnPoint.position,spawnPoint.rotation,spawnPoint);
-                        }
-                    }
-                }
-            }
+            Debug.LogError("Food you are trying to spawn(" + foodToSpawnIngredientsFor + ") has no recipe");
+            return;
         }
         
         
+        foreach (Recipes stationRecipes in recipeListsPerStation)
+        {
+            foreach (Recipes.Recipe stationSpecificRecipe in stationRecipes.recipeList)
+            {
+                
+                if (stationSpecificRecipe.result != foodToSpawnIngredientsFor) continue;
+                
+                foreach (ItemType ingredientToSpawn in stationSpecificRecipe.ingredients)
+                {
+                    if (TryToFindRecipeFor(ingredientToSpawn))
+                    {
+                        SpawnIngredientsForRecipe(ingredientToSpawn,0);
+                        continue;
+                    }
+                    
+                    SpawnIngredientFromType(ingredientToSpawn);
+                }
+            }
+        }
     }
+
+    private void SpawnIngredientFromType(ItemType ingredientTypeToSpawn)
+    {
+        foreach (ItemPrefabPair ingredientPrefabPair in ingredientPrefabPairs)
+        {
+            if (ingredientPrefabPair.item == ingredientTypeToSpawn)
+            {
+                Instantiate(ingredientPrefabPair.gameObject, spawnPoint.position, spawnPoint.rotation, spawnPoint);
+            }
+        }
+    }
+
+    private bool TryToFindRecipeFor(ItemType itemToCheck)
+    {
+        bool hasRecipe = false;
+
+        foreach (Recipes stationRecipes in recipeListsPerStation)
+        {
+            foreach (Recipes.Recipe stationSpecificRecipe in stationRecipes.recipeList)
+            {
+
+                if (stationSpecificRecipe.result != itemToCheck) continue;
+                hasRecipe = true;
+            }
+
+        }
+        
+        return hasRecipe;
+    }
+    
 }

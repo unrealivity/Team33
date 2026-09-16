@@ -4,7 +4,7 @@ using UnityEngine;
 [Serializable]
 public struct DishTimePair
 {
-    [SerializeField] internal FoodType dishToCook;
+    [SerializeField] internal ItemType dishToCook;
     [SerializeField] internal int timeInSeconds;
     
 }

@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
+
 public class UIController : MonoBehaviour
 {
 
-    [SerializeField] private List<FoodPrefabPair> foodPrefabPairWithTimer;
+    [SerializeField] private List<ItemPrefabPair> foodPrefabPairWithTimer;
     [SerializeField] private GameObject foodIconContainer;
-    private List<FoodPrefabPair> _activeRecipes = new();
+    private List<ItemPrefabPair> _activeRecipes = new();
     private void Awake()
     {
         GameController.FoodAddedToBacklog += AddToToDoList;
@@ -15,23 +17,22 @@ public class UIController : MonoBehaviour
         FoodCollector.FoodNotFound += FailedRemoveFromToDoList;
     }
 
-    private void AddToToDoList(FoodType foodType,int timeForDish)
+    private void AddToToDoList(ItemType foodType,int timeForDish)
     {
-        foreach (FoodPrefabPair foodPrefabPair in foodPrefabPairWithTimer)
+        foreach (ItemPrefabPair foodPrefabPair in foodPrefabPairWithTimer)
         {
-            if(foodPrefabPair.foodType != foodType) continue;
-            GameObject foodRequestGameObject = new GameObject();
-            foodRequestGameObject = Instantiate(foodPrefabPair.gameObject, foodIconContainer.transform);
-            _activeRecipes.Add(new FoodPrefabPair(foodRequestGameObject,foodType));
+            if(foodPrefabPair.item != foodType) continue;
+            GameObject foodRequestGameObject = Instantiate(foodPrefabPair.gameObject, foodIconContainer.transform);
+            _activeRecipes.Add(new ItemPrefabPair(foodRequestGameObject,foodType));
         }
     }
 
-    private void SuccessRemoveFromToDoList(FoodType foodType)
+    private void SuccessRemoveFromToDoList(ItemType foodType)
     {
         Debug.Log( "Correct Food was delivered" );
         foreach (var foodPrefabPair in _activeRecipes)
         {
-            if (foodPrefabPair.foodType == foodType)
+            if (foodPrefabPair.item == foodType)
             {
                 Destroy(foodPrefabPair.gameObject);
                 _activeRecipes.Remove(foodPrefabPair);
@@ -40,12 +41,12 @@ public class UIController : MonoBehaviour
         }
     }
 
-    private void FailedRemoveFromToDoList(FoodType foodType)
+    private void FailedRemoveFromToDoList(ItemType foodType)
     {
         Debug.Log( "Failed to deliver:" + foodType);
         foreach (var foodPrefabPair in _activeRecipes)
         {
-            if (foodPrefabPair.foodType == foodType)
+            if (foodPrefabPair.item == foodType)
             {
                 Destroy(foodPrefabPair.gameObject);
                 _activeRecipes.Remove(foodPrefabPair);

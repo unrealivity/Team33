@@ -139,7 +139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fe06b840a6aab042bf365e4877548ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Essen
-  food: 1
+  foodType: 5
 --- !u!114 &6591208557539975211
 MonoBehaviour:
   m_ObjectHideFlags: 0

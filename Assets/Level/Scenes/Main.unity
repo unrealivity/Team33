@@ -3113,14 +3113,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0e9dbe40bdf0d5d43a72db02abe3a44c, type: 2}
   - {fileID: 11400000, guid: 2607cc62c3831624382e1db43bb046cc, type: 2}
   ingredientPrefabPairs:
-  - ingredient: 3
-    prefab: {fileID: 7694298339892882775, guid: bb3b362bfde8cdb4f973505ffdf7a77d, type: 3}
-  - ingredient: 1
-    prefab: {fileID: 7626197771280619689, guid: c819c51a9ff9400419e942a1e251c98d, type: 3}
-  - ingredient: 2
-    prefab: {fileID: 6348899623753695617, guid: da11e707aa53c184ab505cd39526b602, type: 3}
-  - ingredient: 4
-    prefab: {fileID: 3710477344687016408, guid: 91679219e7089024cb7c57b01c082951, type: 3}
+  - item: 1
+    gameObject: {fileID: 7626197771280619689, guid: c819c51a9ff9400419e942a1e251c98d, type: 3}
+  - item: 2
+    gameObject: {fileID: 6348899623753695617, guid: da11e707aa53c184ab505cd39526b602, type: 3}
+  - item: 3
+    gameObject: {fileID: 7694298339892882775, guid: bb3b362bfde8cdb4f973505ffdf7a77d, type: 3}
   spawnPoint: {fileID: 1699768283}
 --- !u!1001 &452537013
 PrefabInstance:
@@ -8685,9 +8683,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameController
   gameLevels:
+  - {fileID: 11400000, guid: 11e2420901459b64abfc8abeeb6ef586, type: 2}
   - {fileID: 11400000, guid: 91c1d4dd54e2f3246b9c57ae1b2e7f2f, type: 2}
   - {fileID: 11400000, guid: 062c1641989821340a6d614aa738e3b5, type: 2}
-  - {fileID: 11400000, guid: 11e2420901459b64abfc8abeeb6ef586, type: 2}
 --- !u!1001 &1244751218
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11575,6 +11573,11 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 7535886289880835830, guid: b740abdb302b0ff47982a5f084f53bb2, type: 3}
+--- !u!4 &1539060783 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4382235383676462511, guid: ee12f4a733cb6d243b521a7da8c95a93, type: 3}
+  m_PrefabInstance: {fileID: 2441041857241079308}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1548450710 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a419b60120a80ce4f90885725a16cb0a, type: 3}
@@ -11779,11 +11782,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIController
   foodPrefabPairWithTimer:
-  - foodType: 1
+  - item: 5
     gameObject: {fileID: 3614236195100475390, guid: 2a51a6c95286bc0469fb6c15e0123d1e, type: 3}
-  - foodType: 2
+  - item: 4
     gameObject: {fileID: 1833886582673520773, guid: cb573770ae70a4b41868156ddb7a1714, type: 3}
-  - foodType: 3
+  - item: 6
     gameObject: {fileID: 1989055776946053753, guid: 5781035716505b244bff3ababb3ffd09, type: 3}
   foodIconContainer: {fileID: 477731585}
 --- !u!1001 &1612355275
@@ -14519,6 +14522,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 5.202128, y: 11.658468, z: 13.1545925}
   m_Center: {x: 0.29337192, y: -2.396203, z: 15.66533}
+--- !u!1 &2018721999 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8360408260514883981, guid: ee12f4a733cb6d243b521a7da8c95a93, type: 3}
+  m_PrefabInstance: {fileID: 2441041857241079308}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2019875037 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a419b60120a80ce4f90885725a16cb0a, type: 3}
@@ -15555,13 +15563,37 @@ PrefabInstance:
       value: 0.026
       objectReference: {fileID: 0}
     - target: {fileID: 7474628904794721677, guid: ee12f4a733cb6d243b521a7da8c95a93, type: 3}
+      propertyPath: spawnPoint
+      value: 
+      objectReference: {fileID: 1539060783}
+    - target: {fileID: 7474628904794721677, guid: ee12f4a733cb6d243b521a7da8c95a93, type: 3}
       propertyPath: PlayerCamera
       value: 
       objectReference: {fileID: 1715718356}
     - target: {fileID: 7474628904794721677, guid: ee12f4a733cb6d243b521a7da8c95a93, type: 3}
+      propertyPath: cutIndicator
+      value: 
+      objectReference: {fileID: 2018721999}
+    - target: {fileID: 7474628904794721677, guid: ee12f4a733cb6d243b521a7da8c95a93, type: 3}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 1715718356}
+    - target: {fileID: 7474628904794721677, guid: ee12f4a733cb6d243b521a7da8c95a93, type: 3}
+      propertyPath: recipeCollection
+      value: 
+      objectReference: {fileID: 11400000, guid: 2607cc62c3831624382e1db43bb046cc, type: 2}
+    - target: {fileID: 7474628904794721677, guid: ee12f4a733cb6d243b521a7da8c95a93, type: 3}
       propertyPath: foodContainerParent
       value: 
       objectReference: {fileID: 250971221}
+    - target: {fileID: 7474628904794721677, guid: ee12f4a733cb6d243b521a7da8c95a93, type: 3}
+      propertyPath: foodPrefab.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7474628904794721677, guid: ee12f4a733cb6d243b521a7da8c95a93, type: 3}
+      propertyPath: 'foodPrefab.Array.data[0]'
+      value: 
+      objectReference: {fileID: 3710477344687016408, guid: 91679219e7089024cb7c57b01c082951, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

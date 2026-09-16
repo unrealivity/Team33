@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 [CreateAssetMenu(fileName = "Level", menuName = "Scriptable Objects/Level")]
 public class Level : ScriptableObject
 {
@@ -11,8 +10,8 @@ public class Level : ScriptableObject
     
     
     public bool isTimed = true;
-    [Range(12,200)]
-    public int timeForLevel;
+    [Range(0,200)]
+    public int timeUntilNextLevelAppears;
 
     [Space]
     [Range(1, 10)]

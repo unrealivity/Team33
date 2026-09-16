@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: 3xSlicedPeaches
   m_EditorClassIdentifier: Assembly-CSharp::Level
   dishesToBeCooked:
-  - dishToCook: 2
+  - dishToCook: 4
     timeInSeconds: 33
-  - dishToCook: 1
+  - dishToCook: 4
     timeInSeconds: 33
-  - dishToCook: 2
+  - dishToCook: 4
     timeInSeconds: 33
   isTimed: 1
-  timeForLevel: 30
+  timeUntilNextLevelAppears: 30
   difficulty: 3

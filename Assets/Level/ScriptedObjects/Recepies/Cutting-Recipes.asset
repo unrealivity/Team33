@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af7696dd1fa9eed4fabd2d5293d571fc, type: 3}
   m_Name: Cutting-Recipes
   m_EditorClassIdentifier: Assembly-CSharp::Recipes
-  recipe:
-  - ingredient: 03000000
-    result: 2
-    cookingTime: 3
+  recipeList:
+  - ingredients: 03000000
+    result: 4
+    prepareValue: 3

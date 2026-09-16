@@ -7,8 +7,8 @@ public class GameController : MonoBehaviour
 {
     
     [SerializeField] private List<Level> gameLevels;
-    public static event Action<FoodType,int> FoodAddedToBacklog;
-    public static event Action<FoodType> FindCookedFood; 
+    public static event Action<ItemType,int> FoodAddedToBacklog;
+    public static event Action<ItemType> FindCookedFood; 
 
     
     
@@ -29,7 +29,7 @@ public class GameController : MonoBehaviour
             if (level.isTimed)
             {
                 PlayLevel(level);
-                yield return new WaitForSeconds(level.timeForLevel);
+                yield return new WaitForSeconds(level.timeUntilNextLevelAppears);
             }
             else
             {
@@ -49,7 +49,7 @@ public class GameController : MonoBehaviour
         }
         
     }
-    private IEnumerator TimeDish(FoodType foodToCook, int timeToCook)
+    private IEnumerator TimeDish(ItemType foodToCook, int timeToCook)
     {
         yield return new WaitForSeconds(timeToCook);
         FindCookedFood?.Invoke(foodToCook);
