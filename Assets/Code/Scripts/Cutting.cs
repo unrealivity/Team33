@@ -119,7 +119,7 @@ public class Cutting : Station {
     /*
      void Update()
        {
-   // TODO LÖSCHEN?!
+                // TODO LÖSCHEN?!
           if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame) {
                RaycastHit hit;
                if (Physics.Raycast(playerCamera.transform.position,
@@ -130,9 +130,9 @@ public class Cutting : Station {
                    }
                }
            }
-      }
+      }*/ 
 }
-*/ 
+
 //TODO Soundeffekte für Kochen(brutzeln oder blubbern) / Kochenfertig(Eieruhr Ping)
 //TODO Item States beim Schneiden / Schneid UI(Cut Icon) / Koch UI(Timer)
 //TODO Debug löschen
