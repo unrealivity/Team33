@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using UnityEngine.InputSystem;
+// TODO LÖSCHEN
+//using UnityEngine.InputSystem;
 
-public class Cutting : MonoBehaviour {
+public class Cutting : Station {
     
     private Ingredient _ingredientOnBoard;
     private int _clicks = 0;
@@ -14,13 +15,18 @@ public class Cutting : MonoBehaviour {
         public FoodType result;
         public int neededClicks;
     }
-
+    
+    [SerializeField] private float foodSpawnForce = 4f;
+    
     [SerializeField] private List<CuttingRecipe> Recipe;
     [SerializeField] private List<GameObject> FoodPrefab;
     [SerializeField] private Transform SpawnPoint;
     [SerializeField] private GameObject CutIndicator;
-    [SerializeField] private Camera PlayerCamera;
-    [SerializeField] private float InteractionRange = 3f;
+    
+    
+//TODO Löschen?!     
+// [SerializeField] private Camera PlayerCamera;    
+// [SerializeField] private float InteractionRange = 3f;    
 
     private void OnTriggerEnter(Collider other) {
         Ingredient ingredient = other.GetComponent<Ingredient>();
@@ -45,13 +51,16 @@ public class Cutting : MonoBehaviour {
             Debug.Log("OFF BOARD");
         }
     }
+
+    public override void Interact() {
+        Cut();
+    }
+//TODO löschen!?!    
 /*
     private void OnMouseDown() {
         if (_ingredientOnBoard == null) {
             return;
         }
-    
-
         foreach (CuttingRecipe recipe in Recipe) {
             if (recipe.ingredient == _ingredientOnBoard.ingredient) {
                 _clicks++;
@@ -96,7 +105,7 @@ public class Cutting : MonoBehaviour {
 
                 if (rigid != null) {
                     Vector3 direction =new Vector3( Random.Range(-1f, 1f), 1f, Random.Range(-1f, 1f));
-                    rigid.AddForce(direction.normalized * 4f, ForceMode.Impulse); 
+                    rigid.AddForce(direction.normalized * foodSpawnForce, ForceMode.Impulse); 
                 }
 
                 Debug.Log("CUT DONE " + recipe.result);
@@ -113,8 +122,9 @@ public class Cutting : MonoBehaviour {
 
     // Update is called once per frame
     void Update()
-    {
-        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame) {
+    { 
+// TODO LÖSCHEN?!        
+/*        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame) {
             RaycastHit hit;
             if (Physics.Raycast(PlayerCamera.transform.position, 
                     PlayerCamera.transform.forward, 
@@ -124,8 +134,9 @@ public class Cutting : MonoBehaviour {
                 }
             }
         }
-    }
+*/    }
 }
-//TODO Soundeffekte für Kochen(brutzeln oder blubbern) / Schneiden(messer auf Holz) / Kochenfertig(Eieruhr Ping) / Objekt fällt auf Boden(Dumpfes Plop)
+//TODO Soundeffekte für Kochen(brutzeln oder blubbern) / Kochenfertig(Eieruhr Ping)
 //TODO Item States beim Schneiden / Schneid UI(Cut Icon) / Koch UI(Timer)
-//TODO Item Spawner/Cannon etwas das Items aus einer Truhe heraus Spawned und in den Raum Schleudert
+//TODO Debug löschen
+//TODO Komentare aktuallisieren oder löschen

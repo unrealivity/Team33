@@ -1,20 +1,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cooking : MonoBehaviour {
+public class Cooking : Station {
+    
+    [SerializeField] private float foodSpawnForce = 8f;
+    [SerializeField] private float ejectForce = 8f;
+    
     [SerializeField] private Recipes recipeCollection;                 // Platz für Recipe script
     [SerializeField] private Transform spawnPoint;                     // Spawn für fertiges Food
     [SerializeField] private List<GameObject> foodPrefab;              // Prefabs von Spawnbarem
+    [SerializeField] private GameObject EjectButton;                   // Feld für Auswurf Button
     
-    private List<Ingredient> _ingredientsInPot = new List<Ingredient>();          // Liste Objekte im Topf
+    private List<Rigidbody> _objectsInPot = new List<Rigidbody>();                // Liste für Objekte im Topf
+    private List<Ingredient> _ingredientsInPot = new List<Ingredient>();          // Liste Zutaten im Topf
     private List<Ingredient> _ingredientsInUse = new List<Ingredient>();          // Liste Verwendung für Cooking
     private Recipes.Recipe _activRecipe;                                          // Für Cooking aktives Recipe
     private float _timer;                                                         // Timer für Abgleich beim Cooking
     private void OnTriggerEnter(Collider other) {                                 // Wenn etwas rein fällt
+        Rigidbody rigid = other.attachedRigidbody;
         Debug.Log("TRIGGER FOUND : " + other.gameObject.name);         
         Ingredient ingredient = other.GetComponent<Ingredient>();                 // Hohl das Zutaten Script vom Objekt
-        Debug.Log("INGREDIENT FOUND : " + (ingredient != null));            
+        Debug.Log("INGREDIENT FOUND : " + (ingredient != null));
         
+        if (rigid != null && !_objectsInPot.Contains(rigid)) {
+            _objectsInPot.Add(rigid);
+            EjectButton.SetActive(true);
+        }
         if (ingredient != null && !_ingredientsInPot.Contains(ingredient)) {   // wenns ne Ingredient ist und nicht im Topf...
             _ingredientsInPot.Add(ingredient);                                    // ... packs in den Topf ...
             
@@ -23,10 +34,19 @@ public class Cooking : MonoBehaviour {
         }
     }
     private void OnTriggerExit(Collider other) {                    // Wenn etwas raus fällt
-        Ingredient ingredient = other.GetComponent<Ingredient>();   // Hohl info aus Ingredient
+        Rigidbody rigid = other.attachedRigidbody;
         
+        Ingredient ingredient = other.GetComponent<Ingredient>();   // Hohl info aus Ingredient
+
+        if (rigid != null) {
+            _objectsInPot.Remove(rigid);
+        }
+        if (_objectsInPot.Count == 0) {
+            EjectButton.SetActive(false);
+        }
         if (ingredient != null) {                                // Wenn es eine Ingredient ist...
             _ingredientsInPot.Remove(ingredient);                   // ... entferne sie aus dem Topf ...
+
             _activRecipe = null;                                    // ... entferne aktives Recipe ...
             _timer = 0;                                             // ... setze den Timer auf null
             
@@ -35,7 +55,10 @@ public class Cooking : MonoBehaviour {
         }
     }
 
-    // Update is called once per frame
+    private void Start() {
+        EjectButton.SetActive(false);
+    }
+
     void Update()
     {
         if (_activRecipe != null) {                       // Wenn Recipe aktiv ist ...
@@ -57,7 +80,7 @@ public class Cooking : MonoBehaviour {
             
             bool match = true;                                                          // Bestätige das Recipe und Zutaten passen
 
-            foreach (IngredientType used in recipe.ingredient) {                                 // Für jede benötigte Ingredient 
+            foreach (IngredientType used in recipe.ingredient) {                        // Für jede benötigte Ingredient 
                 Ingredient matchingIngredient = freeIngredient.Find(z => z.ingredient == used); // Finde die Ingredient
                 
                 if (matchingIngredient == null) {            // Wenn keine passende Ingredient...
@@ -76,33 +99,65 @@ public class Cooking : MonoBehaviour {
         }
     }
 
-    private void CookingDone() {                           
+    private void CookingDone() {
         Recipes.Recipe finishedRecipe = _activRecipe;
         _activRecipe = null;
         _timer = 0;
 
         foreach (Ingredient ingredient in _ingredientsInUse) {      // Für jede Ingredient in verwendete Zutaten ...
             _ingredientsInPot.Remove(ingredient);                   // ... entferne ingredient aus dem Topf ...
-            Destroy(ingredient.gameObject);                         // ... zerstöre das Zutaten Objekt ...
+            Rigidbody rigid = ingredient.GetComponent<Rigidbody>();
+            if (rigid != null) {
+                _objectsInPot.Remove(rigid);
+            }
+            Destroy(ingredient.gameObject);             // ... zerstöre das Zutaten Objekt ...
         }
-        _ingredientsInUse.Clear();                                  // ... leere die verwendete Ingredient
-        
-        foreach (GameObject prefab in foodPrefab) {                                                    // Für jedes Objekt im foodPrefab ...
-            Food food = prefab.GetComponent<Food>();                                                 // ... hohl dir die Informationen aus Food
-            if (food != null && food.food == finishedRecipe.result) {                           // Wenn das prefab ein Food ist und egebenis eines Rezepts ...
-                GameObject newFood = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);  // ... erzeuge das Objekt am SpawnPunkt ...
-                Rigidbody rigid = newFood.GetComponent<Rigidbody>();                                 // ... hohl dir den Rigidbody des neuen Essens
+        _ingredientsInUse.Clear();                      // ... leere die verwendete Ingredient
 
-                if (rigid != null) {                                             // Wenn es einen Body hat ...
-                    Vector3 richtung =new Vector3(                                  // ... gib ihm ne richtung ...
-                        Random.Range(-1f, 1f), 1f, Random.Range(-1f, 1f));          // ... gib ihr zufallswerte ...
-                    rigid.AddForce(richtung.normalized * 8f, ForceMode.Impulse);    // ... schleuder es in die richtung!
+        foreach (GameObject prefab in foodPrefab) {     // Für jedes Objekt im foodPrefab ...
+            Food food = prefab.GetComponent<Food>();    // ... hohl dir die Informationen aus Food
+
+            if (food != null && food.food == finishedRecipe.result) {                            // Wenn das prefab ein Food ist und egebenis eines Rezepts ...
+                GameObject newFood = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation); // ... erzeuge das Objekt am SpawnPunkt ...
+                Rigidbody rigid = newFood.GetComponent<Rigidbody>();                                // ... hohl dir den Rigidbody des neuen Essens
+
+                if (rigid != null) {                                          // Wenn es einen Body hat ...
+                    Vector3 richtung = new Vector3(                              // ... gib ihm ne richtung ...
+                        Random.Range(-1f, 1f), 1f, Random.Range(-1f, 1f));       // ... gib ihr zufallswerte ...
+                    rigid.AddForce(richtung.normalized * foodSpawnForce, ForceMode.Impulse); // ... schleuder es in die richtung!
                 }
-
-                Debug.Log("COOKED " + finishedRecipe.result);    
-                CheckRecipe();                                      // Führe Prüfung aus
-                return;                                             // Beende
+                Debug.Log("COOKED " + finishedRecipe.result);
+                CheckRecipe();  // Führe Prüfung aus
+                return;         // Beende
             }
         }
     }
+
+    public override void Interact() {
+        EjectObjects();
+    }
+
+    private void EjectObjects() {
+        _activRecipe = null;
+        _timer = 0;
+        _ingredientsInUse.Clear();
+        _ingredientsInPot.Clear();
+
+        List<Rigidbody> objectsToEject = new List<Rigidbody>(_objectsInPot);
+        _objectsInPot.Clear();
+        EjectButton.SetActive(false);
+        foreach (Rigidbody rigid in objectsToEject) {
+            Vector3 direction = new Vector3(Random.Range(-1f, 1f), 1f, Random.Range(-1f, 1f));
+            rigid.AddForce(direction.normalized * ejectForce, ForceMode.Impulse);
+        }
+    }
+//TODO nur für Tests dannach Löschen...    
+    [ContextMenu("Test Eject")]
+    private void TestEject()
+    {
+        Interact();
+    }
 }
+//TODO Soundeffekte für Schneiden(messer auf Holz) / Objekt fertig Geschnitten(Dumpfes Plop)
+//TODO Debug löschen
+//TODO Komentare aktuallisieren oder löschen
