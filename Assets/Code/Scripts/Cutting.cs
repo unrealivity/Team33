@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 // TODO LÖSCHEN
 //using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class Cutting : Station {
     
@@ -16,37 +18,52 @@ public class Cutting : Station {
     [SerializeField] private List<GameObject> foodPrefab;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private GameObject cutIndicator;
-    
+    [SerializeField] private IngredientDetector ingredientDetector;
     
 //TODO Löschen?!     
 // [SerializeField] private Camera playerCamera;    
 // [SerializeField] private float interactionRange = 3f;
     [SerializeField] private GameObject foodContainerParent;           // GameObject that parents instantiated foods
 
-    private void OnTriggerEnter(Collider other) {
-        Ingredient ingredient = other.GetComponent<Ingredient>();
-        if (ingredient != null) {
-            foreach (Recipes.Recipe recipe in recipeCollection.recipeList) {
-                if (recipe.ingredients.Count == 1 && recipe.ingredients[0] == ingredient.ingredient) {
-                    _ingredientOnBoard = ingredient;
-                    cutIndicator.SetActive(true);
-                    Debug.Log("ON BOARD " + ingredient.ingredient);
-                    return;
-                }
+    private void Awake()
+    {
+        ingredientDetector.OnIngredientEnter += HandleIngredientEnter;
+        ingredientDetector.OnIngredientExit += HandleIngredientExit;
+        
+        cutIndicator.SetActive(false);
+    }
+
+    private void OnDestroy()
+    {
+        ingredientDetector.OnIngredientEnter -= HandleIngredientEnter;
+        ingredientDetector.OnIngredientExit -= HandleIngredientExit;
+    }
+
+    private void HandleIngredientEnter(Ingredient ingredient)
+    {
+        foreach (Recipes.Recipe recipe in recipeCollection.recipeList)
+        {
+            if (recipe.ingredients.Count == 1 && recipe.ingredients[0] == ingredient.ingredient)
+            {
+                _ingredientOnBoard = ingredient;
+                cutIndicator.SetActive(true);
+                Debug.Log("ON BOARD " + ingredient.ingredient);
+                return;
             }
         }
     }
-
-    private void OnTriggerExit(Collider other) {
-        Ingredient ingredient = other.GetComponent<Ingredient>();
-        if (ingredient != null && ingredient == _ingredientOnBoard) {
+    
+    private void HandleIngredientExit(Ingredient ingredient)
+    {
+        if(ingredient == _ingredientOnBoard) 
+        {
             _ingredientOnBoard = null;
             _clicks = 0;
             cutIndicator.SetActive(false);
             Debug.Log("OFF BOARD");
         }
     }
-
+    
     public override void Interact() {
         Cut();
     }
@@ -108,12 +125,7 @@ public class Cutting : Station {
             }
         }
     }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        cutIndicator.SetActive(false);
-    }
+    
 
     // Update is called once per frame
     /*

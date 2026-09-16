@@ -15,6 +15,7 @@ public class Cooking : Station {
     [FormerlySerializedAs("EjectButton")]
     [SerializeField] private GameObject ejectButton;                   // Feld für Auswurf Button
     [SerializeField] private GameObject foodContainerParent;           // GameObject that parents instantiated foods
+    [SerializeField] private IngredientDetector ingredientDetector;
     
     private List<Rigidbody> _objectsInPot = new List<Rigidbody>();                // Liste für Objekte im Topf
     private List<Ingredient> _ingredientsInPot = new List<Ingredient>();          // Liste Zutaten im Topf
@@ -22,7 +23,19 @@ public class Cooking : Station {
     private Recipes.Recipe _activeRecipe;                                          // Für Cooking aktives Recipe
     private float _timer;                                                         // Timer für Abgleich beim Cooking
 
-    private void OnTriggerEnter(Collider other) {                                 // Wenn etwas rein fällt
+    private void Awake()
+    {
+        ingredientDetector.OnColliderEnter += OnPotEnter;
+        ingredientDetector.OnColliderExit += OnPotExit;
+    }
+
+    private void OnDestroy()
+    {
+        ingredientDetector.OnColliderEnter -= OnPotEnter;
+        ingredientDetector.OnColliderExit -= OnPotExit;
+    }
+
+    private void OnPotEnter(Collider other) {                                 // Wenn etwas rein fällt
         Rigidbody rigid = other.attachedRigidbody;
         Debug.Log("TRIGGER FOUND : " + other.gameObject.name);         
         Ingredient ingredient = other.GetComponent<Ingredient>();                 // Hohl das Zutaten Script vom Objekt
@@ -39,7 +52,7 @@ public class Cooking : Station {
             Debug.Log("SHITS THROW'N IN "+ ingredient);                             
         }
     }
-    private void OnTriggerExit(Collider other) {                    // Wenn etwas raus fällt
+    private void OnPotExit(Collider other) {                    // Wenn etwas raus fällt
         Rigidbody rigid = other.attachedRigidbody;
         
         Ingredient ingredient = other.GetComponent<Ingredient>();   // Hohl info aus Ingredient
@@ -123,7 +136,7 @@ public class Cooking : Station {
             Food food = prefab.GetComponent<Food>();    // ... hohl dir die Informationen aus Food
 
             if (food != null && food.foodType == finishedRecipe.result) {                            // Wenn das prefab ein Food ist und egebenis eines Rezepts ...
-                GameObject newFood = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation); // ... erzeuge das Objekt am SpawnPunkt ...
+                GameObject newFood = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation, foodContainerParent.transform); // ... erzeuge das Objekt am SpawnPunkt ...
                 Rigidbody rigid = newFood.GetComponent<Rigidbody>();                                // ... hohl dir den Rigidbody des neuen Essens
 
                 if (rigid != null) {                                          // Wenn es einen Body hat ...
