@@ -1,7 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Grabbable : MonoBehaviour
+public class Grabbable : MonoBehaviour,IHoverable
 {
     private Rigidbody _rigidbody;
     private Transform _holdTarget;
@@ -39,5 +39,15 @@ public class Grabbable : MonoBehaviour
         force = Vector3.ClampMagnitude(force, _maxFollowForce);
         
         _rigidbody.AddForce(force, ForceMode.Acceleration);
+    }
+
+
+    public void OnHoverEnter()
+    {
+        throw new System.NotImplementedException();
+    }
+    public void OnHoverExit()
+    {
+        throw new System.NotImplementedException();
     }
 }

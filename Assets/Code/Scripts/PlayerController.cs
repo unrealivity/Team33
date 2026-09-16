@@ -37,6 +37,8 @@ public class PlayerController : MonoBehaviour
     [Header("Interaction Settings")]
     [SerializeField] private float interactionRange;
     [SerializeField] private LayerMask interactionLayer;
+    private IHoverable _currentHoverable;
+    private IInteractable _currentInteractable;
 
     [Header("Grab Settings")]
     [SerializeField] private float grabRange;
@@ -90,7 +92,15 @@ public class PlayerController : MonoBehaviour
 
     private void InteractPerformed(InputAction.CallbackContext ctx)
     {
-        Debug.Log("Interact");
+        if (_currentHoverable == null)
+            return;
+        ForwardRaycast(interactionRange, interactionLayer, out RaycastHit interactionHit);
+        if (!interactionHit.collider.TryGetComponent(out IInteractable hitInteractable))
+            return;
+        if (hitInteractable == _currentInteractable) 
+            return;
+        _currentInteractable = hitInteractable;
+        _currentInteractable.Interact();
     }
     private void Update()
     {   
@@ -109,18 +119,42 @@ public class PlayerController : MonoBehaviour
         
         _rotationYaw += _mouseX;
         
-        // pitch camera vertically
-        _camera.transform.localRotation = Quaternion.Euler(_rotationPitch, _rotationYaw, 0f);
+        
     }
 
     private void FixedUpdate()
     {   
         FloatCapsule();
         Vector3 velocityChange = CalculateVelocityChange();
-
+        _camera.transform.localRotation = Quaternion.Euler(_rotationPitch, _rotationYaw, 0f);
         _rigidbody.AddForce(velocityChange,ForceMode.VelocityChange);
+        CheckHover();
     }
+    private void CheckHover()
+    {   
+        //check if anything is in interactionRange
+        if (ForwardRaycast(interactionRange, interactionLayer, out RaycastHit interactionHit))
+        {
+            //check if thing is hoverable
+            if (!interactionHit.collider.TryGetComponent(out IHoverable hitHoverable)) return;
 
+            //quit if hovering the same thing
+            if (hitHoverable == _currentHoverable) return;
+            
+            _currentHoverable = hitHoverable;
+            
+            _currentHoverable.OnHoverEnter();
+        }
+        else 
+        {
+            if (_currentHoverable != null)
+            {
+                _currentHoverable.OnHoverExit();
+                _currentHoverable = null;
+            }
+
+        }
+    }
     
     private Vector3 CalculateVelocityChange()
     {
