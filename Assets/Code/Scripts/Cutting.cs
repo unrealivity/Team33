@@ -9,16 +9,9 @@ public class Cutting : Station {
     private Ingredient _ingredientOnBoard;
     private int _clicks = 0;
     
-    [System.Serializable]
-    public class CuttingRecipe {
-        public IngredientType ingredient;
-        public FoodType result;
-        public int neededClicks;
-    }
-    
     [SerializeField] private float foodSpawnForce = 4f;
-    
-    [SerializeField] private List<CuttingRecipe> Recipe;
+
+    [SerializeField] private Recipes recipeCollection;
     [SerializeField] private List<GameObject> FoodPrefab;
     [SerializeField] private Transform SpawnPoint;
     [SerializeField] private GameObject CutIndicator;
@@ -31,8 +24,8 @@ public class Cutting : Station {
     private void OnTriggerEnter(Collider other) {
         Ingredient ingredient = other.GetComponent<Ingredient>();
         if (ingredient != null) {
-            foreach (CuttingRecipe recipe in Recipe) {
-                if (recipe.ingredient == ingredient.ingredient) {
+            foreach (Recipes.Recipe recipe in recipeCollection.recipe) {
+                if (recipe.ingredient.Count == 1 && recipe.ingredient[0] == ingredient.ingredient) {
                     _ingredientOnBoard = ingredient;
                     CutIndicator.SetActive(true);
                     Debug.Log("ON BOARD " + ingredient.ingredient);
@@ -75,12 +68,12 @@ public class Cutting : Station {
             return;
         }
 
-        foreach (CuttingRecipe recipe in Recipe) {
-            if (recipe.ingredient == _ingredientOnBoard.ingredient) {
+        foreach (Recipes.Recipe recipe in recipeCollection.recipe) {
+            if (recipe.ingredient.Count == 1 && recipe.ingredient[0] == _ingredientOnBoard.ingredient) { 
                 _clicks++;
-                Debug.Log("CUTTING" + _clicks + " / " + recipe.neededClicks);
+                Debug.Log("CUTTING " + _clicks + " / " + recipe.cookingProcess);
 
-                if (_clicks >= recipe.neededClicks) {
+                if (_clicks >= recipe.cookingProcess) {
                     CuttingDone(recipe);
                 }
 
@@ -89,7 +82,7 @@ public class Cutting : Station {
         }
     }
 
-    private void CuttingDone(CuttingRecipe recipe) {
+    private void CuttingDone(Recipes.Recipe recipe) {
         Ingredient oldIngredient = _ingredientOnBoard;
 
         _ingredientOnBoard = null;

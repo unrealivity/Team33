@@ -384,16 +384,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f1225a4f710537468dac7d3023fea1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Cutting
-  Recipe:
-  - ingredient: 3
-    result: 2
-    neededClicks: 5
+  foodSpawnForce: 4
+  recipeCollection: {fileID: 11400000, guid: 4ce8e6951f3788f4f8d21fb3dcd461fc, type: 2}
   FoodPrefab:
   - {fileID: 3710477344687016408, guid: 91679219e7089024cb7c57b01c082951, type: 3}
   SpawnPoint: {fileID: 8762096482936722684}
   CutIndicator: {fileID: 3449778671688947712}
-  PlayerCamera: {fileID: 0}
-  InteractionRange: 3
 --- !u!1 &6035871495404532603
 GameObject:
   m_ObjectHideFlags: 0
