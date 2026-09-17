@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
@@ -23,6 +24,14 @@ public class UIController : MonoBehaviour
         {
             if(foodPrefabPair.item != foodType) continue;
             GameObject foodRequestGameObject = Instantiate(foodPrefabPair.gameObject, foodIconContainer.transform);
+            if (foodRequestGameObject.TryGetComponent(out TimerVisual timerVisual))
+            {
+                timerVisual.StartTimer(timeForDish);
+            }
+            else
+            {
+                Debug.LogError(foodRequestGameObject.gameObject+ "prefab is missing a TimerVisual component");
+            }
             _activeRecipes.Add(new ItemPrefabPair(foodRequestGameObject,foodType));
         }
     }

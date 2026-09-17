@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1071526643277911362}
   - component: {fileID: 4970452846427240267}
   - component: {fileID: 299238298376078886}
+  - component: {fileID: 4574207830296662291}
   m_Layer: 5
   m_Name: _PeachCompote_
   m_TagString: Untagged
@@ -76,6 +77,18 @@ MonoBehaviour:
   m_FillOrigin: 2
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4574207830296662291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1989055776946053753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d82d11ec73dce149acb8586339328ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TimerVisual
 --- !u!1 &5149551391477734005
 GameObject:
   m_ObjectHideFlags: 0
