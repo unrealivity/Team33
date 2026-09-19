@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
@@ -15,7 +14,7 @@ public class UIController : MonoBehaviour
     {
         GameController.FoodAddedToBacklog += AddToToDoList;
         Food.FoodCollected += SuccessRemoveFromToDoList;
-        FoodCollector.FoodNotFound += FailedRemoveFromToDoList;
+        ServingCounter.FoodNotFound += FailedRemoveFromToDoList;
     }
 
     private void AddToToDoList(ItemType foodType,TimedTask dishTask)
@@ -36,31 +35,24 @@ public class UIController : MonoBehaviour
         }
     }
 
-    private void SuccessRemoveFromToDoList(ItemType foodType)
-    {
-        Debug.Log( "Correct Food was delivered" );
-        foreach (var foodPrefabPair in _activeRecipes)
-        {
-            if (foodPrefabPair.item == foodType)
-            {
-                Destroy(foodPrefabPair.gameObject);
-                _activeRecipes.Remove(foodPrefabPair);
-                return;
-            }
-        }
-    }
+    private void SuccessRemoveFromToDoList(ItemType foodType) => ResolveOrder(foodType, success: true);
+    private void FailedRemoveFromToDoList(ItemType foodType) => ResolveOrder(foodType, success: false);
 
-    private void FailedRemoveFromToDoList(ItemType foodType)
+    private void ResolveOrder(ItemType foodType, bool success)
     {
-        Debug.Log( "Failed to deliver:" + foodType);
-        foreach (var foodPrefabPair in _activeRecipes)
+        for (int i = 0; i < _activeRecipes.Count; i++)
         {
-            if (foodPrefabPair.item == foodType)
+            if (_activeRecipes[i].item != foodType) continue;
+
+            GameObject icon = _activeRecipes[i].gameObject;
+            _activeRecipes.RemoveAt(i);
+
+            if (icon.TryGetComponent(out TimerVisual timerVisual))
             {
-                Destroy(foodPrefabPair.gameObject);
-                _activeRecipes.Remove(foodPrefabPair);
-                return;
+                Destroy(timerVisual.gameObject);
             }
+
+            return;
         }
     }
     

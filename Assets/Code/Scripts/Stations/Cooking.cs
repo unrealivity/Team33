@@ -15,7 +15,7 @@ public class Cooking : Station {
     [FormerlySerializedAs("EjectButton")]
     [SerializeField] private GameObject ejectButton;                   // Feld für Auswurf Button
     [SerializeField] private GameObject foodContainerParent;           // GameObject that parents instantiated foods
-    [SerializeField] private IngredientDetector ingredientDetector;
+    [SerializeField] private ObjectDetector objectDetector;
     
     private List<Rigidbody> _objectsInPot = new List<Rigidbody>();                // Liste für Objekte im Topf
     private List<Ingredient> _ingredientsInPot = new List<Ingredient>();          // Liste Zutaten im Topf
@@ -25,14 +25,14 @@ public class Cooking : Station {
 
     private void Awake()
     {
-        ingredientDetector.OnColliderEnter += OnPotEnter;
-        ingredientDetector.OnColliderExit += OnPotExit;
+        objectDetector.OnColliderEnter += OnPotEnter;
+        objectDetector.OnColliderExit += OnPotExit;
     }
 
     private void OnDestroy()
     {
-        ingredientDetector.OnColliderEnter -= OnPotEnter;
-        ingredientDetector.OnColliderExit -= OnPotExit;
+        objectDetector.OnColliderEnter -= OnPotEnter;
+        objectDetector.OnColliderExit -= OnPotExit;
     }
 
     private void OnPotEnter(Collider other) {                                 // Wenn etwas rein fällt

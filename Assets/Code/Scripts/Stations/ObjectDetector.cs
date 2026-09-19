@@ -1,10 +1,13 @@
 using System;
 using UnityEngine;
 
-public class IngredientDetector : MonoBehaviour
+public class ObjectDetector : MonoBehaviour
 {
     public event Action<Ingredient> OnIngredientEnter;
     public event Action<Ingredient> OnIngredientExit;
+    
+    public event Action<Food> OnFoodEnter;
+    public event Action<Food> OnFoodExit;
     
     public event Action<Collider> OnColliderEnter;
     public event Action<Collider> OnColliderExit;
@@ -16,6 +19,10 @@ public class IngredientDetector : MonoBehaviour
         {
             OnIngredientEnter?.Invoke(ingredient);
         }
+        if(other.TryGetComponent(out Food food))
+        {
+            OnFoodEnter?.Invoke(food);
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -24,6 +31,10 @@ public class IngredientDetector : MonoBehaviour
         if(other.TryGetComponent(out Ingredient ingredient))
         {
             OnIngredientExit?.Invoke(ingredient);
+        }
+        if(other.TryGetComponent(out Food food))
+        {
+            OnFoodExit?.Invoke(food);
         }
     }
 }

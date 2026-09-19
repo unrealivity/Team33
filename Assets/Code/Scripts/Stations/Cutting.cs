@@ -18,7 +18,7 @@ public class Cutting : Station {
     [SerializeField] private List<GameObject> foodPrefab;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private GameObject cutIndicator;
-    [SerializeField] private IngredientDetector ingredientDetector;
+    [SerializeField] private ObjectDetector objectDetector;
     
 //TODO Löschen?!     
 // [SerializeField] private Camera playerCamera;    
@@ -27,19 +27,19 @@ public class Cutting : Station {
 
     private void Awake()
     {
-        ingredientDetector.OnIngredientEnter += HandleIngredientEnter;
-        ingredientDetector.OnIngredientExit += HandleIngredientExit;
+        objectDetector.OnIngredientEnter += HandleObjectEnter;
+        objectDetector.OnIngredientExit += HandleObjectExit;
         
         cutIndicator.SetActive(false);
     }
 
     private void OnDestroy()
     {
-        ingredientDetector.OnIngredientEnter -= HandleIngredientEnter;
-        ingredientDetector.OnIngredientExit -= HandleIngredientExit;
+        objectDetector.OnIngredientEnter -= HandleObjectEnter;
+        objectDetector.OnIngredientExit -= HandleObjectExit;
     }
 
-    private void HandleIngredientEnter(Ingredient ingredient)
+    private void HandleObjectEnter(Ingredient ingredient)
     {
         foreach (Recipes.Recipe recipe in recipeCollection.recipeList)
         {
@@ -53,7 +53,7 @@ public class Cutting : Station {
         }
     }
     
-    private void HandleIngredientExit(Ingredient ingredient)
+    private void HandleObjectExit(Ingredient ingredient)
     {
         if(ingredient == _ingredientOnBoard) 
         {
