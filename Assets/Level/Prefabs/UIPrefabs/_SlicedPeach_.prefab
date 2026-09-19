@@ -89,6 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d82d11ec73dce149acb8586339328ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TimerVisual
+  image: {fileID: 3178479347796732624}
 --- !u!1 &6568819801854476468
 GameObject:
   m_ObjectHideFlags: 0

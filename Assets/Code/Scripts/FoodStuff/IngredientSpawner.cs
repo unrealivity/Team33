@@ -15,7 +15,7 @@ public class IngredientSpawner : MonoBehaviour
     }
 
 
-    private void SpawnIngredientsForRecipe(ItemType foodToSpawnIngredientsFor,int timeToFinishDish)
+    private void SpawnIngredientsForRecipe(ItemType foodToSpawnIngredientsFor,TimedTask _task)
     {
         if(!TryToFindRecipeFor(foodToSpawnIngredientsFor))
         {
@@ -35,7 +35,7 @@ public class IngredientSpawner : MonoBehaviour
                 {
                     if (TryToFindRecipeFor(ingredientToSpawn))
                     {
-                        SpawnIngredientsForRecipe(ingredientToSpawn,0);
+                        SpawnIngredientsForRecipe(ingredientToSpawn,_task);
                         continue;
                     }
                     

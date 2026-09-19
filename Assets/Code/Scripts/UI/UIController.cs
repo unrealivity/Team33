@@ -18,7 +18,7 @@ public class UIController : MonoBehaviour
         FoodCollector.FoodNotFound += FailedRemoveFromToDoList;
     }
 
-    private void AddToToDoList(ItemType foodType,int timeForDish)
+    private void AddToToDoList(ItemType foodType,TimedTask dishTask)
     {
         foreach (ItemPrefabPair foodPrefabPair in foodPrefabPairWithTimer)
         {
@@ -26,7 +26,7 @@ public class UIController : MonoBehaviour
             GameObject foodRequestGameObject = Instantiate(foodPrefabPair.gameObject, foodIconContainer.transform);
             if (foodRequestGameObject.TryGetComponent(out TimerVisual timerVisual))
             {
-                timerVisual.StartTimer(timeForDish);
+                timerVisual.Bind(dishTask);
             }
             else
             {
