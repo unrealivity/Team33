@@ -18,5 +18,5 @@ MonoBehaviour:
   - dishToCook: 5
     timeInSeconds: 50
   isTimed: 1
-  timeUntilNextLevelAppears: 40
+  timeUntilNextLevelAppears: 45
   difficulty: 4

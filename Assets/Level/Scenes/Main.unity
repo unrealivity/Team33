@@ -3176,11 +3176,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2607cc62c3831624382e1db43bb046cc, type: 2}
   ingredientPrefabPairs:
   - item: 1
-    gameObject: {fileID: 7626197771280619689, guid: c819c51a9ff9400419e942a1e251c98d, type: 3}
+    prefab: {fileID: 7626197771280619689, guid: c819c51a9ff9400419e942a1e251c98d, type: 3}
   - item: 2
-    gameObject: {fileID: 6348899623753695617, guid: da11e707aa53c184ab505cd39526b602, type: 3}
+    prefab: {fileID: 6348899623753695617, guid: da11e707aa53c184ab505cd39526b602, type: 3}
   - item: 3
-    gameObject: {fileID: 7694298339892882775, guid: bb3b362bfde8cdb4f973505ffdf7a77d, type: 3}
+    prefab: {fileID: 7694298339892882775, guid: bb3b362bfde8cdb4f973505ffdf7a77d, type: 3}
   spawnPoint: {fileID: 1699768283}
 --- !u!1001 &452537013
 PrefabInstance:
@@ -11996,13 +11996,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b666932f521db04399211adb8b08b3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIController
-  foodPrefabPairWithTimer:
-  - item: 5
-    gameObject: {fileID: 3614236195100475390, guid: 2a51a6c95286bc0469fb6c15e0123d1e, type: 3}
+  foodTypeIconPrefabPairs:
   - item: 4
-    gameObject: {fileID: 1833886582673520773, guid: cb573770ae70a4b41868156ddb7a1714, type: 3}
+    prefab: {fileID: 1833886582673520773, guid: cb573770ae70a4b41868156ddb7a1714, type: 3}
   - item: 6
-    gameObject: {fileID: 1989055776946053753, guid: 5781035716505b244bff3ababb3ffd09, type: 3}
+    prefab: {fileID: 1989055776946053753, guid: 5781035716505b244bff3ababb3ffd09, type: 3}
+  - item: 5
+    prefab: {fileID: 3614236195100475390, guid: 2a51a6c95286bc0469fb6c15e0123d1e, type: 3}
   foodIconContainer: {fileID: 477731585}
 --- !u!1001 &1612355275
 PrefabInstance:
@@ -12639,7 +12639,7 @@ GameObject:
   - component: {fileID: 1687979039}
   - component: {fileID: 1687979040}
   - component: {fileID: 1687979041}
-  m_Layer: 6
+  m_Layer: 2
   m_Name: FoodDetector
   m_TagString: Untagged
   m_Icon: {fileID: 0}

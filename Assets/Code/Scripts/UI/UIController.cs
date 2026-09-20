@@ -7,22 +7,28 @@ using UnityEngine;
 public class UIController : MonoBehaviour
 {
 
-    [SerializeField] private List<ItemPrefabPair> foodPrefabPairWithTimer;
+    [SerializeField] private List<ItemPrefabPair> foodTypeIconPrefabPairs;
     [SerializeField] private GameObject foodIconContainer;
     private List<ItemPrefabPair> _activeRecipes = new();
     private void Awake()
     {
-        GameController.FoodAddedToBacklog += AddToToDoList;
-        Food.FoodCollected += SuccessRemoveFromToDoList;
-        ServingCounter.FoodNotFound += FailedRemoveFromToDoList;
+        OrderBacklog.Instance.OrderAdded += AddToToDoList;
+        OrderBacklog.Instance.OrderFulfilled += SuccessRemoveFromToDoList;
+        OrderBacklog.Instance.OrderFailed += FailedRemoveFromToDoList;
+    }
+    private void OnDestroy()
+    {
+        OrderBacklog.Instance.OrderAdded -= AddToToDoList;
+        OrderBacklog.Instance.OrderFulfilled -= SuccessRemoveFromToDoList;
+        OrderBacklog.Instance.OrderFailed -= FailedRemoveFromToDoList;
     }
 
     private void AddToToDoList(ItemType foodType,TimedTask dishTask)
     {
-        foreach (ItemPrefabPair foodPrefabPair in foodPrefabPairWithTimer)
+        foreach (ItemPrefabPair foodIconPair in foodTypeIconPrefabPairs)
         {
-            if(foodPrefabPair.item != foodType) continue;
-            GameObject foodRequestGameObject = Instantiate(foodPrefabPair.gameObject, foodIconContainer.transform);
+            if(foodIconPair.item != foodType) continue;
+            GameObject foodRequestGameObject = Instantiate(foodIconPair.prefab, foodIconContainer.transform);
             if (foodRequestGameObject.TryGetComponent(out TimerVisual timerVisual))
             {
                 timerVisual.Bind(dishTask);
@@ -44,12 +50,13 @@ public class UIController : MonoBehaviour
         {
             if (_activeRecipes[i].item != foodType) continue;
 
-            GameObject icon = _activeRecipes[i].gameObject;
+            GameObject icon = _activeRecipes[i].prefab;
             _activeRecipes.RemoveAt(i);
 
             if (icon.TryGetComponent(out TimerVisual timerVisual))
-            {
-                Destroy(timerVisual.gameObject);
+            {   
+                timerVisual.OnFeedbackComplete += () => Destroy(icon);
+                timerVisual.PlayFeedback(success);
             }
 
             return;

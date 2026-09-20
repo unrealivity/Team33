@@ -51,7 +51,7 @@ public class IngredientSpawner : MonoBehaviour
         {
             if (ingredientPrefabPair.item == ingredientTypeToSpawn)
             {
-                Instantiate(ingredientPrefabPair.gameObject, spawnPoint.position, spawnPoint.rotation, spawnPoint);
+                Instantiate(ingredientPrefabPair.prefab, spawnPoint.position, spawnPoint.rotation, spawnPoint);
             }
         }
     }

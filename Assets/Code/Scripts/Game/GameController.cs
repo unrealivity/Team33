@@ -9,8 +9,6 @@ public class GameController : MonoBehaviour
     [SerializeField] private List<Level> gameLevels;
     public static event Action<ItemType,TimedTask> FoodAddedToBacklog;
     public static event Action<ItemType> FindCookedFood;
-    private readonly TaskManager taskManager = new();
-    
     
     private Level _currentLevel;
     private bool _currentLevelIsCleared;
@@ -24,7 +22,7 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        taskManager.Tick(Time.deltaTime);
+        TaskManager.Instance.Tick(Time.deltaTime);
     }
 
     private IEnumerator PlayGame()
@@ -54,9 +52,9 @@ public class GameController : MonoBehaviour
             dishTask.OnComplete += () =>
             {
                 FindCookedFood?.Invoke(levelSection.dishToCook);
-                taskManager.RemoveTask(dishTask);
+                TaskManager.Instance.RemoveTask(dishTask);
             };
-            taskManager.AddTask(dishTask);
+            TaskManager.Instance.AddTask(dishTask);
             
             FoodAddedToBacklog?.Invoke(levelSection.dishToCook, dishTask);
         }

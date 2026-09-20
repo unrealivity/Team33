@@ -6,10 +6,10 @@ using UnityEngine.Serialization;
 public struct ItemPrefabPair
 {
     [SerializeField] internal ItemType item;
-    [SerializeField] internal GameObject gameObject;
-    public ItemPrefabPair(GameObject gameObject, ItemType itemType)
+    [SerializeField] internal GameObject prefab;
+    public ItemPrefabPair(GameObject prefab, ItemType itemType)
     {
         item = itemType;
-        this.gameObject = gameObject;
+        this.prefab = prefab;
     }
 }

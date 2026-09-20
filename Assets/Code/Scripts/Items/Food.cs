@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 
 public class Food : MonoBehaviour {
@@ -21,7 +20,8 @@ public class Food : MonoBehaviour {
     }
 
     internal void CollectFood(    float collectForce, float forceDamper, float maxCollectForce, Vector3 targetPosition, float bufferDistance)
-    {
+    {   
+        isClaimed =  true;
         _collectForce = collectForce;
         _forceDamper = forceDamper;
         _maxCollectForce = maxCollectForce;

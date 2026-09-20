@@ -21,7 +21,7 @@ public class TimedTask : ICompletable
     public void Tick(float deltaTime)
     {   
         if (IsComplete) return;
-        ElapsedTime += Time.deltaTime;
+        ElapsedTime += deltaTime;
         OnProgress?.Invoke(Progress);
         
         if (ElapsedTime >= Duration)

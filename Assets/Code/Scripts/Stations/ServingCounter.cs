@@ -14,7 +14,8 @@ public class ServingCounter : Station
     
     private List<Food> _foodOnCounter = new();
     [SerializeField] private ObjectDetector objectDetector;
-    public static event Action<ItemType> FoodNotFound;
+    public static event Action<ItemType> FoodFailedToCollect;
+    public static event Action<ItemType> FoodCollected;
 
     private void Awake()
     {
@@ -43,20 +44,26 @@ public class ServingCounter : Station
     {
         Food oldestMatch = _foodOnCounter.Find(f => f.foodType == completedDish);
         if (oldestMatch != null)
+        {
             Collect(oldestMatch);
+        }
         else
-            FoodNotFound?.Invoke(completedDish);
+        {
+            FoodFailedToCollect?.Invoke(completedDish);
+        }
     }
 
     private void TryCollect()
     {
-        if (_foodOnCounter.Count == 0) return;
-        Collect(_foodOnCounter[0]);
+        Food oldestOrderedMatch = _foodOnCounter.Find(f => OrderBacklog.Instance.IsOrdered(f.foodType));
+        if (oldestOrderedMatch != null)
+            Collect(oldestOrderedMatch);
     }
 
     private void Collect(Food food)
     {
         if (!_foodOnCounter.Remove(food)) return; // guards double-collect if AutoCollect and Interact race
+        FoodCollected?.Invoke(food.foodType);
         food.CollectFood(collectForce,forceDamper,maxCollectForce,targetLocation.position,bufferDistance);
     }
 }
