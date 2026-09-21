@@ -43,7 +43,7 @@ public class Cooking : Station {
         
         if (rigid != null && !_objectsInPot.Contains(rigid)) {
             _objectsInPot.Add(rigid);
-            ejectButton.SetActive(true);
+            UpdateEjectButton();
         }
         if (ingredient != null && !_ingredientsInPot.Contains(ingredient)) {   // wenns ne Ingredient ist und nicht im Topf...
             _ingredientsInPot.Add(ingredient);                                    // ... packs in den Topf ...
@@ -59,10 +59,9 @@ public class Cooking : Station {
 
         if (rigid != null) {
             _objectsInPot.Remove(rigid);
+            UpdateEjectButton();
         }
-        if (_objectsInPot.Count == 0) {
-            ejectButton.SetActive(false);
-        }
+
         if (ingredient != null) {                                // Wenn es eine Ingredient ist...
             _ingredientsInPot.Remove(ingredient);                   // ... entferne sie aus dem Topf ...
             _activeRecipe = null;                                    // ... entferne aktives Recipe ...
@@ -130,6 +129,7 @@ public class Cooking : Station {
             }
             Destroy(ingredient.gameObject);             // ... zerstöre das Zutaten Objekt ...
         }
+        UpdateEjectButton();
         _ingredientsInUse.Clear();                      // ... leere die verwendete Ingredient
 
         foreach (GameObject prefab in foodPrefab) {     // Für jedes Objekt im foodPrefab ...
@@ -151,6 +151,10 @@ public class Cooking : Station {
         }
     }
 
+    private void UpdateEjectButton() {
+        ejectButton.SetActive(_objectsInPot.Count > 0);
+    }
+
     public override void Interact() {
         EjectObjects();
     }
@@ -159,13 +163,11 @@ public class Cooking : Station {
         _activeRecipe = null;
         _timer = 0;
         _ingredientsInUse.Clear();
-        _ingredientsInPot.Clear();
 
         List<Rigidbody> objectsToEject = new List<Rigidbody>(_objectsInPot);
-        _objectsInPot.Clear();
-        ejectButton.SetActive(false);
         foreach (Rigidbody rigid in objectsToEject) {
             Vector3 direction = new Vector3(Random.Range(-1f, 1f), 1f, Random.Range(-1f, 1f));
+           
             rigid.AddForce(direction.normalized * ejectForce, ForceMode.Impulse);
         }
     }
