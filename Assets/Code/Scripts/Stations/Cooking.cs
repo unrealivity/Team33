@@ -21,7 +21,7 @@ public class Cooking : Station {
     private List<Ingredient> _ingredientsInPot = new List<Ingredient>();          // Liste Zutaten im Topf
     private List<Ingredient> _ingredientsInUse = new List<Ingredient>();          // Liste Verwendung für Cooking
     private Recipes.Recipe _activeRecipe;                                          // Für Cooking aktives Recipe
-    private float _timer;                                                         // Timer für Abgleich beim Cooking
+    private TimedTask _cookTask;                                                         // Timer für Abgleich beim Cooking
 
     private void Awake()
     {
@@ -65,31 +65,25 @@ public class Cooking : Station {
         }
         if (ingredient != null) {                                // Wenn es eine Ingredient ist...
             _ingredientsInPot.Remove(ingredient);                   // ... entferne sie aus dem Topf ...
-            _activeRecipe = null;                                    // ... entferne aktives Recipe ...
-            _timer = 0;                                             // ... setze den Timer auf null
             
             CheckRecipe();
             Debug.Log("SHITS THROW'N OUT "+ ingredient.ingredient);
         }
     }
-
-    private void Start() {
-        ejectButton.SetActive(false);
-    }
-
-    void Update()
+    
+    private void CancelActiveCook()
     {
-        if (_activeRecipe != null) {                       // Wenn Recipe aktiv ist ...
-            _timer += Time.deltaTime;                     // ... erhöhe den Timer ...
-            if (_timer >= _activeRecipe.prepareValue) {     // ... wenn Timer fertig ...
-                CookingDone();                            // ... führe CookingDone aus
-            }
+        if (_cookTask != null)
+        {
+            TaskManager.Instance.RemoveTask(_cookTask);
+            _cookTask = null;
         }
+        _activeRecipe = null;
     }
 
-    private void CheckRecipe() {                                       
-        _activeRecipe = null;                                          
-        _timer = 0;                                                     
+    private void CheckRecipe() {        
+        CancelActiveCook();
+        
         _ingredientsInUse.Clear();                                     
 
         foreach (Recipes.Recipe recipe in recipeCollection.recipeList) {                    // für jedes Recipe in Sammlung
@@ -111,6 +105,9 @@ public class Cooking : Station {
             if (match) {                                        // Wenn es passt ...
                 _activeRecipe = recipe;                            
                 _ingredientsInUse = found;
+                _cookTask = new TimedTask(recipe.prepareValue);
+                _cookTask.OnComplete += CookingDone;
+                TaskManager.Instance.AddTask(_cookTask);
                 Debug.Log("FOUND RECEPIE " + recipe.result);
                 return;
             }
@@ -119,8 +116,7 @@ public class Cooking : Station {
 
     private void CookingDone() {                           
         Recipes.Recipe finishedRecipe = _activeRecipe;
-        _activeRecipe = null;
-        _timer = 0;
+        CancelActiveCook();
 
         foreach (Ingredient ingredient in _ingredientsInUse) {      // Für jede Ingredient in verwendete Zutaten ...
             _ingredientsInPot.Remove(ingredient);                   // ... entferne ingredient aus dem Topf ...
@@ -156,14 +152,13 @@ public class Cooking : Station {
     }
 
     private void EjectObjects() {
-        _activeRecipe = null;
-        _timer = 0;
-        _ingredientsInUse.Clear();
-        _ingredientsInPot.Clear();
+        CancelActiveCook();
+        //_ingredientsInUse.Clear();
+        //_ingredientsInPot.Clear();
 
         List<Rigidbody> objectsToEject = new List<Rigidbody>(_objectsInPot);
-        _objectsInPot.Clear();
-        ejectButton.SetActive(false);
+        //_objectsInPot.Clear();
+        //ejectButton.SetActive(false);
         foreach (Rigidbody rigid in objectsToEject) {
             Vector3 direction = new Vector3(Random.Range(-1f, 1f), 1f, Random.Range(-1f, 1f));
             rigid.AddForce(direction.normalized * ejectForce, ForceMode.Impulse);
