@@ -56,7 +56,7 @@ MonoBehaviour:
   - {fileID: 3710477344687016408, guid: 91679219e7089024cb7c57b01c082951, type: 3}
   spawnPoint: {fileID: 2620634741013116630}
   cutIndicator: {fileID: 7065565014042484318}
-  ingredientDetector: {fileID: 2125551396823224227}
+  objectDetector: {fileID: 2125551396823224227}
   foodContainerParent: {fileID: 0}
 --- !u!65 &2960438329441908820
 BoxCollider:

@@ -78,4 +78,10 @@ public class TimerVisual : MonoBehaviour
         image.color = Color.white;
         image.fillAmount = 1;
     }
+
+    internal void ResetCookTimerVisual()
+    {
+        UnBind();
+        image.fillAmount = 0;
+    }
 }

@@ -9,7 +9,7 @@ public class Grabbable : MonoBehaviour,IHoverable
     private float _grabForce;
     private float _forceDamper;
     private float _maxFollowForce;
-    
+    [SerializeField] private GameObject grabIndicator;
 
     private void Awake() => _rigidbody = GetComponent<Rigidbody>();
 
@@ -26,12 +26,13 @@ public class Grabbable : MonoBehaviour,IHoverable
     {
         _isHeld = false;
         _holdTarget = null;
+        OnHoverExit();
     }
 
     private void FixedUpdate()
     {
         if (!_isHeld) return;
-        
+        OnHoverEnter();
         Vector3 toTarget = _holdTarget.position - _rigidbody.position;
         Vector3 velocityError = -_rigidbody.linearVelocity;
         
@@ -44,10 +45,10 @@ public class Grabbable : MonoBehaviour,IHoverable
 
     public void OnHoverEnter()
     {
-
+        grabIndicator.SetActive(true);
     }
     public void OnHoverExit()
     {
-        
+        grabIndicator.SetActive(false);
     }
 }

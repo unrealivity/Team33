@@ -8,7 +8,8 @@ public class Cooking : Station {
     
     [SerializeField] private float foodSpawnForce = 8f;
     [SerializeField] private float ejectForce = 8f;
-    
+
+    [SerializeField] private TimerVisual timerVisual;
     [SerializeField] private Recipes recipeCollection;                 // Platz für Recipe script
     [SerializeField] private Transform spawnPoint;                     // Spawn für fertiges Food
     [SerializeField] private List<GameObject> foodPrefab;              // Prefabs von Spawnbarem
@@ -74,7 +75,8 @@ public class Cooking : Station {
     private void CancelActiveCook()
     {
         if (_cookTask != null)
-        {
+        {   
+            timerVisual.ResetCookTimerVisual();
             TaskManager.Instance.RemoveTask(_cookTask);
             _cookTask = null;
         }
@@ -107,6 +109,7 @@ public class Cooking : Station {
                 _ingredientsInUse = found;
                 _cookTask = new TimedTask(recipe.prepareValue);
                 _cookTask.OnComplete += CookingDone;
+                timerVisual.Bind(_cookTask);
                 TaskManager.Instance.AddTask(_cookTask);
                 Debug.Log("FOUND RECEPIE " + recipe.result);
                 return;
