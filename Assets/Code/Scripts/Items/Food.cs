@@ -12,27 +12,34 @@ public class Food : MonoBehaviour {
     private Vector3 _targetPosition;
     private float _bufferDistance;
     public static event Action<ItemType> FoodCollected;
-    internal bool isClaimed;
-
+    private Grabbable _grabbable; 
     private void Awake()
     {
-        _rigidbody = GetComponent<Rigidbody>();
+        if (TryGetComponent<Rigidbody>(out Rigidbody rigidbody))
+        {
+            _rigidbody = rigidbody;
+        }
+        if (TryGetComponent<Grabbable>(out Grabbable grabbable))
+        {
+            _grabbable = grabbable;
+        }
     }
 
     internal void CollectFood(    float collectForce, float forceDamper, float maxCollectForce, Vector3 targetPosition, float bufferDistance)
-    {   
-        isClaimed =  true;
+    {
         _collectForce = collectForce;
         _forceDamper = forceDamper;
         _maxCollectForce = maxCollectForce;
         _targetPosition = targetPosition;
         _bufferDistance = bufferDistance;
         
-        
         _rigidbody.useGravity = false;
         _rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
         _rigidbody.detectCollisions = false;
+
         _collecting = true;
+        
+        _grabbable.Drop();
     }
     
     private void FixedUpdate()
@@ -48,8 +55,12 @@ public class Food : MonoBehaviour {
 
         if ((_rigidbody.position - _targetPosition).sqrMagnitude > _bufferDistance) return;
         FoodCollected?.Invoke(foodType);
-        Destroy(gameObject);
+        PoolManager.Instance.Release(gameObject);
         _collecting = false;
     }
-    
+
+    internal void ResetForReuse()
+    {
+        _collecting = false;
+    }
 }

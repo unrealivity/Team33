@@ -28,7 +28,7 @@ public class UIController : MonoBehaviour
         foreach (ItemPrefabPair foodIconPair in foodTypeIconPrefabPairs)
         {
             if(foodIconPair.item != foodType) continue;
-            GameObject foodRequestGameObject = Instantiate(foodIconPair.prefab, foodIconContainer.transform);
+            var foodRequestGameObject = PoolManager.Instance.Get(foodIconPair.prefab, foodIconContainer.transform, transform.position, transform.rotation );
             if (foodRequestGameObject.TryGetComponent(out TimerVisual timerVisual))
             {
                 timerVisual.Bind(dishTask);
@@ -55,7 +55,7 @@ public class UIController : MonoBehaviour
 
             if (icon.TryGetComponent(out TimerVisual timerVisual))
             {   
-                timerVisual.OnFeedbackComplete += () => Destroy(icon);
+                timerVisual.OnFeedbackComplete += () => PoolManager.Instance.Release(icon);
                 timerVisual.PlayFeedback(success);
             }
 

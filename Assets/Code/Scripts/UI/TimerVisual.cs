@@ -72,4 +72,10 @@ public class TimerVisual : MonoBehaviour
     {
         UnBind();
     }
+
+    internal void ResetVisual()
+    {
+        image.color = Color.white;
+        image.fillAmount = 1;
+    }
 }

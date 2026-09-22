@@ -9,6 +9,7 @@ public class IngredientSpawner : MonoBehaviour
     [SerializeField] private List<Recipes> recipeListsPerStation ;
     [SerializeField] private List<ItemPrefabPair> ingredientPrefabPairs;
     [SerializeField] private Transform spawnPoint;
+    [SerializeField] private Transform parentContainer;
     private void Awake()
     {
         GameController.FoodAddedToBacklog += SpawnIngredientsForRecipe;
@@ -38,7 +39,6 @@ public class IngredientSpawner : MonoBehaviour
                         SpawnIngredientsForRecipe(ingredientToSpawn,_task);
                         continue;
                     }
-                    
                     SpawnIngredientFromType(ingredientToSpawn);
                 }
             }
@@ -51,7 +51,8 @@ public class IngredientSpawner : MonoBehaviour
         {
             if (ingredientPrefabPair.item == ingredientTypeToSpawn)
             {
-                Instantiate(ingredientPrefabPair.prefab, spawnPoint.position, spawnPoint.rotation, spawnPoint);
+                GameObject spawnedObject = PoolManager.Instance.Get(ingredientPrefabPair.prefab, parentContainer, spawnPoint.position, spawnPoint.rotation);
+                return;
             }
         }
     }
@@ -64,13 +65,10 @@ public class IngredientSpawner : MonoBehaviour
         {
             foreach (Recipes.Recipe stationSpecificRecipe in stationRecipes.recipeList)
             {
-
                 if (stationSpecificRecipe.result != itemToCheck) continue;
                 hasRecipe = true;
             }
-
         }
-        
         return hasRecipe;
     }
     

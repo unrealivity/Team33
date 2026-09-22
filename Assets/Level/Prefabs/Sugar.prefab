@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8584245189057945311}
   - component: {fileID: 5519271302615728215}
   - component: {fileID: -601506328093277447}
-  - component: {fileID: -4885859532613265091}
+  - component: {fileID: 1968878336610087463}
   m_Layer: 7
   m_Name: Sugar
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -44,7 +44,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6348899623753695617}
-  m_Mesh: {fileID: 6829545962858582196, guid: fb8b21eb8f0c8714b88234d320820d3b, type: 3}
+  m_Mesh: {fileID: -6244012940314451959, guid: 49bc5ac03dbd79a42bd13aff5955bfe4, type: 3}
 --- !u!23 &7165486796376551973
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -70,12 +70,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -8808603378205153978, guid: fb8b21eb8f0c8714b88234d320820d3b, type: 3}
-  - {fileID: -6924109895715413030, guid: fb8b21eb8f0c8714b88234d320820d3b, type: 3}
-  - {fileID: 1586524248921035058, guid: fb8b21eb8f0c8714b88234d320820d3b, type: 3}
-  - {fileID: -7201124755985134257, guid: fb8b21eb8f0c8714b88234d320820d3b, type: 3}
-  - {fileID: 952189737026427709, guid: fb8b21eb8f0c8714b88234d320820d3b, type: 3}
-  - {fileID: 2636986606428376281, guid: fb8b21eb8f0c8714b88234d320820d3b, type: 3}
+  - {fileID: 2636986606428376281, guid: 49bc5ac03dbd79a42bd13aff5955bfe4, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -151,7 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0d0abd07c9ec2347bdaf42cddd98311, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Grabbable
---- !u!64 &-4885859532613265091
+--- !u!64 &1968878336610087463
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -172,4 +167,4 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 6829545962858582196, guid: fb8b21eb8f0c8714b88234d320820d3b, type: 3}
+  m_Mesh: {fileID: -6244012940314451959, guid: 49bc5ac03dbd79a42bd13aff5955bfe4, type: 3}
