@@ -12421,7 +12421,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e9a6a8afeb3be2d4399db73a63d77add, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.0600004
+      value: -5.034
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e9a6a8afeb3be2d4399db73a63d77add, type: 3}
       propertyPath: m_LocalPosition.z
@@ -15134,7 +15134,7 @@ MonoBehaviour:
       animation: {fileID: 1426668549500373124, guid: e9a6a8afeb3be2d4399db73a63d77add, type: 3}
       moveSpeed: 1
     - waypoint: {fileID: 755053922}
-      animation: {fileID: -112529560673464258, guid: e9a6a8afeb3be2d4399db73a63d77add, type: 3}
+      animation: {fileID: -9019542125306335617, guid: e9a6a8afeb3be2d4399db73a63d77add, type: 3}
       moveSpeed: 0
   - steps:
     - waypoint: {fileID: 755053922}
@@ -15159,6 +15159,8 @@ MonoBehaviour:
   startRoute: 0
   turnSpeed: 180
   animator: {fileID: 1999080609}
+  animClose: {fileID: -9019542125306335617, guid: e9a6a8afeb3be2d4399db73a63d77add, type: 3}
+  animOpen: {fileID: 2639853457613834408, guid: e9a6a8afeb3be2d4399db73a63d77add, type: 3}
   animEnter: {fileID: 1029629167427721926, guid: e9a6a8afeb3be2d4399db73a63d77add, type: 3}
   animRest: {fileID: 4910320336024369904, guid: e9a6a8afeb3be2d4399db73a63d77add, type: 3}
   animShoot: {fileID: -112529560673464258, guid: e9a6a8afeb3be2d4399db73a63d77add, type: 3}

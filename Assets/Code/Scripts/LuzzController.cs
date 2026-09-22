@@ -7,27 +7,29 @@ using UnityEngine.Playables;
 
 public class LuzzController : MonoBehaviour
 {
-    [Serializable]
+    [Serializable] // Auswahl für wegpunkte / animation vom wegpunkt aus / geschwindigkeit bis zum nächsten wegpunkt
     public class RouteStep {
         public Transform waypoint;
         public AnimationClip animation;
         public float moveSpeed = 2f;
     }
-    [Serializable]
+    [Serializable] 
     public class Route {
         public List<RouteStep> steps;
     }
 
-    [Header("Routes")]
+    [Header("Routes")] // Liste der Routen
     [SerializeField] private List<Route> routes;
 
-    [Header("Movement")] 
+    [Header("Movement")]
     [SerializeField] private float waypointDistance = 0.1f;
     [SerializeField] private int startRoute = 0;
     [SerializeField] private float turnSpeed = 180f;
 
-    [Header("Animation")] 
+    [Header("Animation")] // Felder um die AnimationsClips einfacher zu verwenden
     [SerializeField] private Animator animator;
+    [SerializeField] private AnimationClip animClose;
+    [SerializeField] private AnimationClip animOpen;
     [SerializeField] private AnimationClip animEnter;
     [SerializeField] private AnimationClip animRest;
     [SerializeField] private AnimationClip animShoot;
@@ -103,6 +105,12 @@ public class LuzzController : MonoBehaviour
         _currentAnimation = clip;
     }
     // Mit LuzzController.Walk(); usw. können einzelne Animationen wie Posen abgerufen werden.
+    public void Close() {
+        PlayAnimation(animClose);
+    }
+    public void Open() {
+        PlayAnimation(animOpen);
+    }
     public void Enter() {
         PlayAnimation(animEnter);
     }
@@ -143,5 +151,12 @@ public class LuzzController : MonoBehaviour
 
         if (Keyboard.current.digit6Key.wasPressedThisFrame)
             Walk();
+        
+        if (Keyboard.current.digit7Key.wasPressedThisFrame)
+            Open();
+        
+        if (Keyboard.current.digit8Key.wasPressedThisFrame)
+            Close();
     }
 }
+
