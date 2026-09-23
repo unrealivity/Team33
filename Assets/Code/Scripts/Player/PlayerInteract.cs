@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,9 +12,12 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] private float interactionRange;
     [SerializeField] private LayerMask interactionLayer;
     
-    private IHoverable _currentHoverable;
-    private IInteractable _currentInteractable;
-    private RaycastHit _hoverHit;
+    private readonly RaycastHit[] _hitBuffer = new RaycastHit[16];
+    private readonly HashSet<IHoverable> _currentlyHovered = new();
+    private readonly HashSet<IHoverable> _hitThisFrame = new();
+    private readonly List<IHoverable> _toExit = new();
+
+    private IInteractable _closestInteractable;
 
     private Camera _camera;
     
@@ -32,36 +36,57 @@ public class PlayerInteract : MonoBehaviour
 
     private void CheckHover()
     {   
-        bool hit = Physics.Raycast(_camera.transform.position, _camera.transform.forward, out _hoverHit, interactionRange, interactionLayer);
+        int hitCount = Physics.RaycastNonAlloc(
+            _camera.transform.position,
+            _camera.transform.forward,
+            _hitBuffer,
+            interactionRange,
+            interactionLayer);
         
-        if (hit && _hoverHit.collider.TryGetComponent(out IHoverable hitHoverable))
+        Array.Sort(_hitBuffer, 0, hitCount, DistanceComparer.Instance);
+
+        _closestInteractable = null;
+        _hitThisFrame.Clear();
+
+        for (int i = 0; i < hitCount; i++)
         {
-            //quit if hovering the same thing
-            if (hitHoverable == _currentHoverable) return;
-            _currentHoverable?.OnHoverExit();
-            _currentHoverable = hitHoverable;
-            _currentHoverable.OnHoverEnter();
-        }
-        else
-        {   
-            _currentHoverable?.OnHoverExit();
-            _currentHoverable = null;
+            Collider hitCollider = _hitBuffer[i].collider;
+
+            if (hitCollider.TryGetComponent(out IHoverable hoverable))
+            {
+                _hitThisFrame.Add(hoverable);
+                if (_currentlyHovered.Add(hoverable))
+                    hoverable.OnHoverEnter(); // wasn't hovered last frame
+            }
+
+            if (_closestInteractable == null && hitCollider.TryGetComponent(out IInteractable interactable))
+                _closestInteractable = interactable;
         }
 
-        if (_currentHoverable == null)
+        _toExit.Clear();
+        foreach (IHoverable hovered in _currentlyHovered)
         {
-            _currentInteractable = null;
+            if (!_hitThisFrame.Contains(hovered))
+                _toExit.Add(hovered);
+        }
+        foreach (IHoverable exited in _toExit)
+        {
+            exited.OnHoverExit();
+            _currentlyHovered.Remove(exited);
         }
     }
     
     private void InteractPerformed(InputAction.CallbackContext ctx)
     {
-        if (_currentHoverable == null) return;
-        if (!_hoverHit.collider.TryGetComponent(out IInteractable hitInteractable)) return;
-        if (hitInteractable == _currentInteractable) return;
-        
-        _currentInteractable = hitInteractable;
-        _currentInteractable.Interact();
-        _currentInteractable = null;
+        _closestInteractable?.Interact();
+    }
+
+    private class DistanceComparer : IComparer<RaycastHit>
+    {
+        public static readonly DistanceComparer Instance = new();
+        public int Compare(RaycastHit a, RaycastHit b)
+        { 
+            return a.distance.CompareTo(b.distance);
+        }
     }
 }
