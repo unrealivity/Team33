@@ -5,7 +5,12 @@ using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class Cooking : Station {
-    
+
+    public static event Action CookingStartedEvent;
+    public static event Action CookingStoppedEvent;
+    public static event Action CookingDoneEvent;
+        
+        
     [SerializeField] private float foodSpawnForce = 8f;
     [SerializeField] private float ejectForce = 8f;
     
@@ -63,10 +68,15 @@ public class Cooking : Station {
         }
 
         if (ingredient != null) {                                // Wenn es eine Ingredient ist...
+            
+            if (_activeRecipe != null) {
+                CookingStoppedEvent?.Invoke();
+            }
+            
             _ingredientsInPot.Remove(ingredient);                   // ... entferne sie aus dem Topf ...
             _activeRecipe = null;                                    // ... entferne aktives Recipe ...
             _timer = 0;                                             // ... setze den Timer auf null
-            
+
             CheckRecipe();
             Debug.Log("SHITS THROW'N OUT "+ ingredient.ingredient);
         }
@@ -87,6 +97,11 @@ public class Cooking : Station {
     }
 
     private void CheckRecipe() {                                       
+        
+        if (_activeRecipe != null) {
+            CookingStoppedEvent?.Invoke();
+        }
+        
         _activeRecipe = null;                                          
         _timer = 0;                                                     
         _ingredientsInUse.Clear();                                     
@@ -110,6 +125,9 @@ public class Cooking : Station {
             if (match) {                                        // Wenn es passt ...
                 _activeRecipe = recipe;                            
                 _ingredientsInUse = found;
+                
+                CookingStartedEvent?.Invoke();
+                
                 Debug.Log("FOUND RECEPIE " + recipe.result);
                 return;
             }
@@ -117,6 +135,9 @@ public class Cooking : Station {
     }
 
     private void CookingDone() {                           
+        
+        CookingDoneEvent?.Invoke();
+        
         Recipes.Recipe finishedRecipe = _activeRecipe;
         _activeRecipe = null;
         _timer = 0;
@@ -163,6 +184,7 @@ public class Cooking : Station {
         _activeRecipe = null;
         _timer = 0;
         _ingredientsInUse.Clear();
+        
 
         List<Rigidbody> objectsToEject = new List<Rigidbody>(_objectsInPot);
         foreach (Rigidbody rigid in objectsToEject) {
@@ -171,13 +193,4 @@ public class Cooking : Station {
             rigid.AddForce(direction.normalized * ejectForce, ForceMode.Impulse);
         }
     }
-//TODO nur für Tests dannach Löschen...    
-    [ContextMenu("Test Eject")]
-    private void TestEject()
-    {
-        Interact();
-    }
 }
-//TODO Soundeffekte für Schneiden(messer auf Holz) / Objekt fertig Geschnitten(Dumpfes Plop)
-//TODO Debug löschen
-//TODO Komentare aktuallisieren oder löschen

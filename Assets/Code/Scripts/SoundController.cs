@@ -23,6 +23,27 @@ public class SoundController : MonoBehaviour
 
     private Dictionary<Sounds, SoundData> _soundDictionary;
 
+    private void OnEnable() {
+        Cooking.CookingStartedEvent += StartCookingSound;
+        Cooking.CookingStoppedEvent += StopCookingSound;
+        Cooking.CookingDoneEvent += CookingFinished;
+
+        Cutting.CuttingEvent += PlayCutting;
+    }
+    private void OnDisable() {
+        Cooking.CookingStartedEvent -= StartCookingSound;
+        Cooking.CookingStoppedEvent -= StopCookingSound;
+        Cooking.CookingDoneEvent -= CookingFinished;
+        
+        Cutting.CuttingEvent -= PlayCutting;
+    }
+
+    private void CookingFinished() {
+        StopCookingSound();
+        PlayCookingDone();
+    }
+
+
     private void Awake() {
         if (Instance != null && Instance != this) {
             Destroy(gameObject);
@@ -58,7 +79,7 @@ public class SoundController : MonoBehaviour
 
     
     
-    public void PlayCooking() {
+    public void PlayCookingDone() {
         PlaySound(Sounds.CookingDone, boilingSource);
     }
     public void PlayCutting() {
@@ -85,7 +106,7 @@ public class SoundController : MonoBehaviour
     }
 
     public void StartBackgroundMusic() {
-        if (!_soundDictionary.TryGetValue(Sounds.Cooking, out SoundData sound)) {
+        if (!_soundDictionary.TryGetValue(Sounds.BackgroundMusic, out SoundData sound)) {
             Debug.LogWarning("Sound not found: BackgroundMusic");
             return;
         }
@@ -99,7 +120,7 @@ public class SoundController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        StartBackgroundMusic();
     }
 
     // Update is called once per frame
