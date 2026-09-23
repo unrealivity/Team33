@@ -1,14 +1,9 @@
 fileFormatVersion: 2
-guid: 82939afded668f141a0be8919af1c94c
+guid: 526a756d5898cb947a4343f9f7bca84c
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Licht.001
-    second: {fileID: 2100000, guid: 2b4dae536f63ef044a06d7c3f6f52d0a, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -73,7 +68,7 @@ ModelImporter:
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
-    useFileScale: 0
+    useFileScale: 1
     strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
