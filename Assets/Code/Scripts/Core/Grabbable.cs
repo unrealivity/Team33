@@ -45,10 +45,16 @@ public class Grabbable : MonoBehaviour,IHoverable
 
     public void OnHoverEnter()
     {
-        grabIndicator.SetActive(true);
+        if (grabIndicator)
+        {
+            grabIndicator.SetActive(true);
+        }
     }
     public void OnHoverExit()
     {
-        grabIndicator.SetActive(false);
+        if (grabIndicator)
+        {
+            grabIndicator.SetActive(false);
+        }
     }
 }
