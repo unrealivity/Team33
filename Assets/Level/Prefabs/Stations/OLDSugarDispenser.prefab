@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 2235609499021837265}
   - component: {fileID: 3948757721144621959}
   m_Layer: 6
-  m_Name: SugarDispenser
+  m_Name: OLDSugarDispenser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

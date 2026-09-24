@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 2960438329441908820}
   - component: {fileID: 4003007918560957817}
   m_Layer: 6
-  m_Name: CuttingBoard
+  m_Name: OLDCuttingBoard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
