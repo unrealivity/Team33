@@ -20,7 +20,8 @@ public class Food : MonoBehaviour {
     private float _bufferDistance;
     
     private int _ignoreRaycastLayer;
-    
+    private int _playerLayer;
+
     public static event Action FoodWaitingOnTable;
     public static event Action FoodAte;
     
@@ -38,7 +39,8 @@ public class Food : MonoBehaviour {
         {
             _collider = foundCollider;
         }
-        _ignoreRaycastLayer = LayerMask.NameToLayer("Ignore Raycast");
+        _ignoreRaycastLayer = LayerMask.GetMask("Ignore Raycast");
+        _playerLayer = LayerMask.GetMask("Player");
     }
 
     internal void CollectFood(    float collectForce, float forceDamper, float maxCollectForce, Vector3 targetPosition, float bufferDistance)
@@ -49,10 +51,10 @@ public class Food : MonoBehaviour {
         _targetPosition = targetPosition;
         _bufferDistance = bufferDistance;
 
-        _collider.excludeLayers = LayerMask.NameToLayer("Player");
+        _rigidbody.excludeLayers = _playerLayer;
         gameObject.layer = _ignoreRaycastLayer;
         _rigidbody.useGravity = false;
-        _rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+        _rigidbody.detectCollisions = false;
         
         _collecting = true;
         
@@ -83,11 +85,12 @@ public class Food : MonoBehaviour {
     {
         LuzzBehaviorController.VacuumFood += CollectFood;
         _atTable = true;
-        FoodWaitingOnTable?.Invoke();
         _collecting = false;
+        FoodWaitingOnTable?.Invoke();
+
+        _rigidbody.detectCollisions = true;
         _rigidbody.linearVelocity = Vector3.zero;
         _rigidbody.useGravity = true;
-        _rigidbody.detectCollisions = true;
     }
     private void EatFood()
     {
