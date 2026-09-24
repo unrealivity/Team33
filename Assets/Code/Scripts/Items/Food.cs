@@ -3,26 +3,42 @@ using UnityEngine;
 
 
 public class Food : MonoBehaviour {
+    
     public ItemType foodType;
-    private bool _collecting;
+    
     private Rigidbody _rigidbody;
+    private Collider _collider;
+    private Grabbable _grabbable;
+    
+    private bool _collecting;
+    private bool _atTable;
+    
     private float _collectForce;
     private float _forceDamper;
     private float _maxCollectForce;
     private Vector3 _targetPosition;
     private float _bufferDistance;
-    public static event Action<ItemType> FoodCollected;
-    private Grabbable _grabbable; 
+    
+    private int _ignoreRaycastLayer;
+    
+    public static event Action FoodWaitingOnTable;
+    public static event Action FoodAte;
+    
     private void Awake()
     {
-        if (TryGetComponent<Rigidbody>(out Rigidbody rigidbody))
+        if (TryGetComponent(out Rigidbody foundRigidbody))
         {
-            _rigidbody = rigidbody;
+            _rigidbody = foundRigidbody;
         }
-        if (TryGetComponent<Grabbable>(out Grabbable grabbable))
+        if (TryGetComponent(out Grabbable foundGrabbable))
         {
-            _grabbable = grabbable;
+            _grabbable = foundGrabbable;
         }
+        if (TryGetComponent(out Collider foundCollider))
+        {
+            _collider = foundCollider;
+        }
+        _ignoreRaycastLayer = LayerMask.NameToLayer("Ignore Raycast");
     }
 
     internal void CollectFood(    float collectForce, float forceDamper, float maxCollectForce, Vector3 targetPosition, float bufferDistance)
@@ -32,11 +48,12 @@ public class Food : MonoBehaviour {
         _maxCollectForce = maxCollectForce;
         _targetPosition = targetPosition;
         _bufferDistance = bufferDistance;
-        
+
+        _collider.excludeLayers = LayerMask.NameToLayer("Player");
+        gameObject.layer = _ignoreRaycastLayer;
         _rigidbody.useGravity = false;
         _rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
-        _rigidbody.detectCollisions = false;
-
+        
         _collecting = true;
         
         _grabbable.Drop();
@@ -54,13 +71,35 @@ public class Food : MonoBehaviour {
         _rigidbody.AddForce(force, ForceMode.Acceleration);
 
         if ((_rigidbody.position - _targetPosition).sqrMagnitude > _bufferDistance) return;
-        FoodCollected?.Invoke(foodType);
-        PoolManager.Instance.Release(gameObject);
+        if(!_atTable)
+        {
+            FoodArrivedAtTable();
+            return;
+        }
+        EatFood();
+    }
+    
+    private void FoodArrivedAtTable()
+    {
+        LuzzBehaviorController.VacuumFood += CollectFood;
+        _atTable = true;
+        FoodWaitingOnTable?.Invoke();
         _collecting = false;
+        _rigidbody.linearVelocity = Vector3.zero;
+        _rigidbody.useGravity = true;
+        _rigidbody.detectCollisions = true;
+    }
+    private void EatFood()
+    {
+        FoodAte?.Invoke();
+        LuzzBehaviorController.VacuumFood -= CollectFood;
+        PoolManager.Instance.Release(gameObject);
     }
 
     internal void ResetForReuse()
     {
         _collecting = false;
+        _atTable = false;
+        _rigidbody = null;
     }
 }

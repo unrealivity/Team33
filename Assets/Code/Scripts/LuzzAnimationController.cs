@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 
-public class LuzzController : MonoBehaviour
+public class LuzzAnimationController : MonoBehaviour
 {
     [Serializable] // Auswahl für wegpunkte / animation vom wegpunkt aus / geschwindigkeit bis zum nächsten wegpunkt
     public class RouteStep {
@@ -42,6 +42,8 @@ public class LuzzController : MonoBehaviour
     private int _currentWaypoint;
     private bool _isRouteRunning;
 
+    public static event Action RouteComplete;
+    
     private void Awake() {
         _rigidbody = GetComponent<Rigidbody>();
         _currentRoute = startRoute;
@@ -68,6 +70,7 @@ public class LuzzController : MonoBehaviour
         }
 
         if (_currentWaypoint >= route.steps.Count - 1) {
+            RouteComplete?.Invoke();
             _isRouteRunning = false;
             return;
         }
