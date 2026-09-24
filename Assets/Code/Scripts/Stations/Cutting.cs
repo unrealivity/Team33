@@ -8,6 +8,8 @@ using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class Cutting : Station {
+
+    public static event Action CuttingEvent;
     
     private Ingredient _ingredientOnBoard;
     private int _clicks = 0;
@@ -20,9 +22,6 @@ public class Cutting : Station {
     [SerializeField] private GameObject cutIndicator;
     [SerializeField] private ObjectDetector objectDetector;
     
-//TODO Löschen?!     
-// [SerializeField] private Camera playerCamera;    
-// [SerializeField] private float interactionRange = 3f;
     [SerializeField] private GameObject foodContainerParent;           // GameObject that parents instantiated foods
 
     private void Awake()
@@ -67,21 +66,7 @@ public class Cutting : Station {
     public override void Interact() {
         Cut();
     }
-//TODO löschen!?!    
-/*
-    private void OnMouseDown() {
-        if (_ingredientOnBoard == null) {
-            return;
-        }
-        foreach (CuttingRecipe recipe in Recipe) {
-            if (recipe.ingredient == _ingredientOnBoard.ingredient) {
-                _clicks++;
-                Debug.Log("CUTTING" + _clicks + " / " + recipe.neededClicks);
-                return;
-            }
-        }
-    }
-*/
+
     private void Cut() {
         if (_ingredientOnBoard == null) {
             return;
@@ -92,6 +77,8 @@ public class Cutting : Station {
                 _clicks++;
                 Debug.Log("CUTTING " + _clicks + " / " + recipe.prepareValue);
 
+                CuttingEvent?.Invoke();
+                
                 if (_clicks >= recipe.prepareValue) {
                     CuttingDone(recipe);
                 }
@@ -125,27 +112,4 @@ public class Cutting : Station {
             }
         }
     }
-    
-
-    // Update is called once per frame
-    /*
-     void Update()
-       {
-                // TODO LÖSCHEN?!
-          if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame) {
-               RaycastHit hit;
-               if (Physics.Raycast(playerCamera.transform.position,
-                       playerCamera.transform.forward,
-                       out hit, interactionRange)) {
-                   if (hit.collider.gameObject == cutIndicator) {
-                       Cut();
-                   }
-               }
-           }
-      }*/ 
 }
-
-//TODO Soundeffekte für Kochen(brutzeln oder blubbern) / Kochenfertig(Eieruhr Ping)
-//TODO Item States beim Schneiden / Schneid UI(Cut Icon) / Koch UI(Timer)
-//TODO Debug löschen
-//TODO Komentare aktuallisieren oder löschen

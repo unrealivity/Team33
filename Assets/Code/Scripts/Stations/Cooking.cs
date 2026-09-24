@@ -5,7 +5,12 @@ using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class Cooking : Station {
-    
+
+    public static event Action CookingStartedEvent;
+    public static event Action CookingStoppedEvent;
+    public static event Action CookingDoneEvent;
+        
+        
     [SerializeField] private float foodSpawnForce = 8f;
     [SerializeField] private float ejectForce = 8f;
 
@@ -44,7 +49,7 @@ public class Cooking : Station {
         
         if (rigid != null && !_objectsInPot.Contains(rigid)) {
             _objectsInPot.Add(rigid);
-            ejectButton.SetActive(true);
+            UpdateEjectButton();
         }
         if (ingredient != null && !_ingredientsInPot.Contains(ingredient)) {   // wenns ne Ingredient ist und nicht im Topf...
             _ingredientsInPot.Add(ingredient);                                    // ... packs in den Topf ...
@@ -60,11 +65,15 @@ public class Cooking : Station {
 
         if (rigid != null) {
             _objectsInPot.Remove(rigid);
+            UpdateEjectButton();
         }
-        if (_objectsInPot.Count == 0) {
-            ejectButton.SetActive(false);
-        }
+
         if (ingredient != null) {                                // Wenn es eine Ingredient ist...
+            
+            if (_activeRecipe != null) {
+                CookingStoppedEvent?.Invoke();
+            }
+            
             _ingredientsInPot.Remove(ingredient);                   // ... entferne sie aus dem Topf ...
             
             CheckRecipe();
@@ -86,6 +95,11 @@ public class Cooking : Station {
     private void CheckRecipe() {        
         CancelActiveCook();
         
+    
+    
+        if (_activeRecipe != null) {
+            CookingStoppedEvent?.Invoke();
+        }
         _ingredientsInUse.Clear();                                     
 
         foreach (Recipes.Recipe recipe in recipeCollection.recipeList) {                    // für jedes Recipe in Sammlung
@@ -107,6 +121,9 @@ public class Cooking : Station {
             if (match) {                                        // Wenn es passt ...
                 _activeRecipe = recipe;                            
                 _ingredientsInUse = found;
+                
+                CookingStartedEvent?.Invoke();
+                
                 _cookTask = new TimedTask(recipe.prepareValue);
                 _cookTask.OnComplete += CookingDone;
                 timerVisual.Bind(_cookTask);
@@ -118,6 +135,9 @@ public class Cooking : Station {
     }
 
     private void CookingDone() {                           
+        
+        CookingDoneEvent?.Invoke();
+        
         Recipes.Recipe finishedRecipe = _activeRecipe;
         CancelActiveCook();
 
@@ -129,6 +149,7 @@ public class Cooking : Station {
             }
             Destroy(ingredient.gameObject);             // ... zerstöre das Zutaten Objekt ...
         }
+        UpdateEjectButton();
         _ingredientsInUse.Clear();                      // ... leere die verwendete Ingredient
 
         foreach (GameObject prefab in foodPrefab) {     // Für jedes Objekt im foodPrefab ...
@@ -150,6 +171,10 @@ public class Cooking : Station {
         }
     }
 
+    private void UpdateEjectButton() {
+        ejectButton.SetActive(_objectsInPot.Count > 0);
+    }
+
     public override void Interact() {
         EjectObjects();
     }
@@ -164,16 +189,8 @@ public class Cooking : Station {
         //ejectButton.SetActive(false);
         foreach (Rigidbody rigid in objectsToEject) {
             Vector3 direction = new Vector3(Random.Range(-1f, 1f), 1f, Random.Range(-1f, 1f));
+           
             rigid.AddForce(direction.normalized * ejectForce, ForceMode.Impulse);
         }
     }
-//TODO nur für Tests dannach Löschen...    
-    [ContextMenu("Test Eject")]
-    private void TestEject()
-    {
-        Interact();
-    }
 }
-//TODO Soundeffekte für Schneiden(messer auf Holz) / Objekt fertig Geschnitten(Dumpfes Plop)
-//TODO Debug löschen
-//TODO Komentare aktuallisieren oder löschen
