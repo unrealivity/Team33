@@ -3,7 +3,17 @@ guid: b2cb5b96ee6c2f04ab0efd5e28e44778
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Atlas_Metallic
+    second: {fileID: 2100000, guid: bcf48d364df610b4daac3927f0b70930, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Eisen_Dunkel
+    second: {fileID: 2100000, guid: eccb4da5708c8474c90df814a06850d1, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

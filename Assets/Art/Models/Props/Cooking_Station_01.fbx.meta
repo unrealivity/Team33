@@ -3,7 +3,17 @@ guid: aee206cb150f43042ae87286abe57682
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Eisen
+    second: {fileID: 2100000, guid: 6b33802863f04e9428c8dc2385c84f8b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Eisen_Dunkel
+    second: {fileID: 2100000, guid: eccb4da5708c8474c90df814a06850d1, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

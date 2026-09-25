@@ -3,7 +3,12 @@ guid: 025afdd1f0eb7db488fb251be0ce6503
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Messing
+    second: {fileID: 2100000, guid: c79bafec56ac6f44eb249d000b33c02d, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
