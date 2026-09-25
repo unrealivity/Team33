@@ -12,7 +12,7 @@ public class ServingCounter : Station
 
     
     
-    private List<Food> _foodOnCounter = new();
+    private readonly List<Food> _foodOnCounter = new();
     [SerializeField] private ObjectDetector objectDetector;
     public static event Action<ItemType> FoodFailedToCollect;
     public static event Action<ItemType> FoodCollected;
@@ -43,7 +43,7 @@ public class ServingCounter : Station
     private void AutoCollect(ItemType completedDish)
     {
         Food oldestMatch = _foodOnCounter.Find(f => f.foodType == completedDish);
-        if (oldestMatch != null)
+        if (oldestMatch is not null)
         {
             Collect(oldestMatch);
         }

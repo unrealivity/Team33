@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class TimedTask : ICompletable
 {
-    public float Duration { get; }
-    public float ElapsedTime  { get ; private set; }
-    public float Progress => Mathf.Clamp01(ElapsedTime / Duration);
+    private float Duration { get; }
+    private float ElapsedTime  { get ; set; }
+    private float Progress => Mathf.Clamp01(ElapsedTime / Duration);
     public bool IsComplete { get; private set; }
 
     public event Action OnComplete;

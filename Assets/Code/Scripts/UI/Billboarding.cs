@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class Billboarding : MonoBehaviour
@@ -8,7 +7,8 @@ public class Billboarding : MonoBehaviour
     {
         _camera = Camera.main;
     }
-    void Update()
+
+    private void Update()
     {
         Quaternion rotation = _camera.transform.rotation;
         transform.LookAt(transform.position + rotation * Vector3.forward, rotation * Vector3.up);

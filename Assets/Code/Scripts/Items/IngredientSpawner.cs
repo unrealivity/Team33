@@ -49,11 +49,9 @@ public class IngredientSpawner : MonoBehaviour
     {
         foreach (ItemPrefabPair ingredientPrefabPair in ingredientPrefabPairs)
         {
-            if (ingredientPrefabPair.item == ingredientTypeToSpawn)
-            {
-                GameObject spawnedObject = PoolManager.Instance.Get(ingredientPrefabPair.prefab, parentContainer, spawnPoint.position, spawnPoint.rotation);
-                return;
-            }
+            if (ingredientPrefabPair.item != ingredientTypeToSpawn) continue;
+            GameObject spawnedObject = PoolManager.Instance.Get(ingredientPrefabPair.prefab, parentContainer, spawnPoint.position, spawnPoint.rotation);
+            return;
         }
     }
 

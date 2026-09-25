@@ -57,7 +57,7 @@ public class TimerVisual : MonoBehaviour
         image.fillAmount = 1f;
         Vector3 punch = Vector3.one * 1.2f;
         float t = 0f;
-        float feedBackDuration = 0.8f;
+        const float feedBackDuration = 0.8f;
         while (t < feedBackDuration)
         {
             t += Time.deltaTime;

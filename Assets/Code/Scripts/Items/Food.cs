@@ -7,7 +7,6 @@ public class Food : MonoBehaviour {
     public ItemType foodType;
     
     private Rigidbody _rigidbody;
-    private Collider _collider;
     private Grabbable _grabbable;
     
     private bool _collecting;
@@ -37,7 +36,6 @@ public class Food : MonoBehaviour {
         }
         if (TryGetComponent(out Collider foundCollider))
         {
-            _collider = foundCollider;
         }
         _ignoreRaycastLayer = LayerMask.GetMask("Ignore Raycast");
         _playerLayer = LayerMask.GetMask("Player");

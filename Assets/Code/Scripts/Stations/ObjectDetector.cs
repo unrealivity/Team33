@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+
 public class ObjectDetector : MonoBehaviour
 {
     public event Action<Ingredient> OnIngredientEnter;

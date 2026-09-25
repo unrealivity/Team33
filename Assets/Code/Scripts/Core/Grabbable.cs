@@ -1,6 +1,6 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Grabbable : MonoBehaviour,IHoverable
 {
     private Rigidbody _rigidbody;

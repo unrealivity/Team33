@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -7,8 +6,8 @@ public class MainMenuEvents : MonoBehaviour
     private UIDocument _uiDocument;
     private Button _startButton;
     private Button _exitButton;
-    private List<Button> _buttons = new List<Button>();
-    [SerializeField] AudioSource clickSound;
+    private List<Button> _buttons = new();
+    [SerializeField] private AudioSource clickSound;
     
     private void Awake() 
     {
