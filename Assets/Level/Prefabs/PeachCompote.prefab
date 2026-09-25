@@ -214,7 +214,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5259370418402656631}
   serializedVersion: 5
-  m_Mass: 1
+  m_Mass: 3
   m_LinearDamping: 0
   m_AngularDamping: 3.69
   m_CenterOfMass: {x: 0, y: 0, z: 0}

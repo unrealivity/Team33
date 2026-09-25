@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3914403070917802648}
   - component: {fileID: 6021340239672550607}
   - component: {fileID: -8645729972858523494}
-  - component: {fileID: 5338654198696465648}
+  - component: {fileID: 1013265277820940193}
   m_Layer: 7
   m_Name: slicedPeach
   m_TagString: Untagged
@@ -33,8 +33,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.55, y: 0.55, z: 0.55}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7661392280012313342}
   m_Father: {fileID: 0}
@@ -132,7 +132,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3710477344687016408}
   serializedVersion: 5
-  m_Mass: 1
+  m_Mass: 0.7
   m_LinearDamping: 0
   m_AngularDamping: 3.69
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -164,8 +164,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Grabbable
   grabIndicator: {fileID: 4492069937603195097}
---- !u!64 &5338654198696465648
-MeshCollider:
+--- !u!65 &1013265277820940193
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -182,10 +182,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -519220354408400400, guid: a73e330e0efbdfa44897f18b244d2738, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 0.53061664, y: 0.054634236, z: 0.51227814}
+  m_Center: {x: -0.07773654, y: 0.027317118, z: -0.088307016}
 --- !u!1 &4492069937603195097
 GameObject:
   m_ObjectHideFlags: 0
