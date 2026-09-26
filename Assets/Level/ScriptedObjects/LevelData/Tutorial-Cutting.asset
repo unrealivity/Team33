@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Tutorial-Cutting
   m_EditorClassIdentifier: Assembly-CSharp::Level
   dishesToBeCooked:
-  - dishToCook: 2
+  - dishToCook: 4
     timeInSeconds: 0
+    isTimed: 0
   isTimed: 0
-  timeForLevel: 12
+  timeUntilNextLevelAppears: 0
   difficulty: 1
