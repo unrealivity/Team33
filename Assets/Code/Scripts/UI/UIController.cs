@@ -31,7 +31,10 @@ public class UIController : MonoBehaviour
             var foodRequestGameObject = PoolManager.Instance.Get(foodIconPair.prefab, foodIconContainer.transform, transform.position, transform.rotation );
             if (foodRequestGameObject.TryGetComponent(out TimerVisual timerVisual))
             {
-                timerVisual.Bind(dishTask);
+                if (dishTask != null)
+                {
+                    timerVisual.Bind(dishTask);
+                }
             }
             else
             {

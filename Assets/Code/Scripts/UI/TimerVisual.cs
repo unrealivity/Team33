@@ -67,6 +67,7 @@ public class TimerVisual : MonoBehaviour
         }
         transform.localScale = Vector3.one;
         OnFeedbackComplete?.Invoke();
+        OnFeedbackComplete = null;
     }
     private void OnDestroy()
     {
@@ -74,7 +75,10 @@ public class TimerVisual : MonoBehaviour
     }
 
     internal void ResetVisual()
-    {
+    {   
+        UnBind();
+        OnFeedbackComplete = null;
+        transform.localScale = Vector3.one;
         image.color = Color.white;
         image.fillAmount = 1;
     }

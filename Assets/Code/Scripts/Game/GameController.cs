@@ -28,17 +28,27 @@ public class GameController : MonoBehaviour
     private IEnumerator PlayGame()
     {
         foreach (Level level in gameLevels)
-        {
+        {   
+            PlayLevel(level);
+            
             if (level.isTimed)
             {
-                PlayLevel(level);
-                yield return new WaitForSeconds(level.timeUntilNextLevelAppears);
+                yield return WaitForTimeOrClear(level.timeUntilNextLevelAppears);
             }
             else
             {
-                PlayLevel(level);
-                yield return new WaitUntil(() => _currentLevelIsCleared);
+                yield return new WaitUntil(() => !OrderBacklog.Instance.HasActiveOrders);
             }
+        }
+    }
+    
+    private IEnumerator WaitForTimeOrClear(float duration)
+    {
+        float elapsed = 0f;
+        while (elapsed < duration && OrderBacklog.Instance.HasActiveOrders)
+        {
+            elapsed += Time.deltaTime;
+            yield return null;
         }
     }
     
@@ -47,14 +57,18 @@ public class GameController : MonoBehaviour
     {
         foreach (DishTimePair levelSection in levelToPlay.dishesToBeCooked)
         {
-
-            var dishTask = new TimedTask(levelSection.timeInSeconds);
-            dishTask.OnComplete += () =>
+            TimedTask dishTask = null;
+            
+            if (levelSection.isTimed)
             {
-                FindCookedFood?.Invoke(levelSection.dishToCook);
-                TaskManager.Instance.RemoveTask(dishTask);
-            };
-            TaskManager.Instance.AddTask(dishTask);
+                dishTask = new TimedTask(levelSection.timeInSeconds);
+                dishTask.OnComplete += () =>
+                {
+                    FindCookedFood?.Invoke(levelSection.dishToCook);
+                    TaskManager.Instance.RemoveTask(dishTask);
+                };
+                TaskManager.Instance.AddTask(dishTask);
+            }
             
             FoodAddedToBacklog?.Invoke(levelSection.dishToCook, dishTask);
         }

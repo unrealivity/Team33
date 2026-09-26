@@ -2,9 +2,9 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public struct DishTimePair
+public class DishTimePair
 {
-    [SerializeField] internal ItemType dishToCook;
-    [SerializeField] internal int timeInSeconds;
-    
+    public ItemType dishToCook;
+    public int timeInSeconds;
+    public bool isTimed = true;
 }

@@ -63,6 +63,7 @@ public class OrderBacklog
         if (!_pendingOrders.TryGetValue(foodType, out var queue) || queue.Count == 0) return;
 
         TimedTask resolvedTask = queue.Dequeue();
-        TaskManager.Instance.RemoveTask(resolvedTask);
+        if (resolvedTask != null) // nothing to cancel for an untimed dish
+            TaskManager.Instance.RemoveTask(resolvedTask);
     }
 }
