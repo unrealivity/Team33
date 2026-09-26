@@ -6,6 +6,6 @@ public class ImageViewing : Station
     public override void Interact()
     {
         content.SetActive(!content.activeSelf);
-        //TODO pause game
+        PauseManager.TogglePause();
     }
 }

@@ -34,10 +34,7 @@ public class Food : MonoBehaviour {
         {
             _grabbable = foundGrabbable;
         }
-        if (TryGetComponent(out Collider foundCollider))
-        {
-        }
-        _ignoreRaycastLayer = LayerMask.GetMask("Ignore Raycast");
+        _ignoreRaycastLayer = LayerMask.NameToLayer("Luzz");
         _playerLayer = LayerMask.GetMask("Player");
     }
 

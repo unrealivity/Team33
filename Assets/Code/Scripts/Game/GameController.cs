@@ -40,6 +40,7 @@ public class GameController : MonoBehaviour
                 yield return new WaitUntil(() => !OrderBacklog.Instance.HasActiveOrders);
             }
         }
+        
     }
     
     private IEnumerator WaitForTimeOrClear(float duration)
