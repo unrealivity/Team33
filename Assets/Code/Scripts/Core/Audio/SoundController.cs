@@ -28,6 +28,7 @@ public class SoundController : MonoBehaviour
     [SerializeField] private AudioSource luzzSource;
     [SerializeField] private AudioSource bellSource;
     [SerializeField] private AudioSource uiSource;
+    [SerializeField] private AudioSource chestSource;
     
 
     private Dictionary<Sounds, SoundData> _soundDictionary;
@@ -58,8 +59,9 @@ public class SoundController : MonoBehaviour
         ServingCounter.RingBell += PlayBellRing;
         OrderBacklog.Instance.OrderFulfilled += PlayOrderSuccess;
         OrderBacklog.Instance.OrderFailed += PlayOrderFailed;
+        IngredientSpawner.IngredientSpawned += PlayIngredientSpawnSound;
     }
-
+    
 
 
     private void OnDisable()
@@ -72,6 +74,7 @@ public class SoundController : MonoBehaviour
         ServingCounter.RingBell -= PlayBellRing;
         OrderBacklog.Instance.OrderFulfilled -= PlayOrderSuccess;
         OrderBacklog.Instance.OrderFailed -= PlayOrderFailed;
+        IngredientSpawner.IngredientSpawned -= PlayIngredientSpawnSound;
     }
 
     // ---------------------------------------------------------------------
@@ -145,6 +148,5 @@ public class SoundController : MonoBehaviour
     private void PlayOrderFailed(ItemType _obj) => PlaySound(Sounds.DeliverFail,uiSource);
 
     private void PlayOrderSuccess(ItemType _obj) => PlaySound(Sounds.DeliverSuccess,uiSource);
-
-    
+    private void PlayIngredientSpawnSound() => PlaySound(Sounds.IngredientSpawned, chestSource);
 }

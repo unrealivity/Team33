@@ -13,7 +13,7 @@ public class GameController : MonoBehaviour
     
     private Level _currentLevel;
     private bool _currentLevelIsCleared;
-
+    public static int CurrentDifficulty { get; private set; }
 
 
     private void Start()
@@ -58,7 +58,10 @@ public class GameController : MonoBehaviour
     
     
     private void PlayLevel(Level levelToPlay)
-    {
+    {   
+        _currentLevel = levelToPlay;
+        CurrentDifficulty = levelToPlay.difficulty;
+        
         foreach (DishTimePair levelSection in levelToPlay.dishesToBeCooked)
         {
             TimedTask dishTask = null;

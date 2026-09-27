@@ -11,6 +11,7 @@ public class IngredientSpawner : MonoBehaviour
     [SerializeField] private List<ItemPrefabPair> ingredientPrefabPairs;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private Transform parentContainer;
+    public static event Action IngredientSpawned;
     private void Awake()
     {
         GameController.FoodAddedToBacklog += SpawnIngredientsForRecipe;
@@ -55,6 +56,7 @@ public class IngredientSpawner : MonoBehaviour
         foreach (ItemPrefabPair ingredientPrefabPair in ingredientPrefabPairs)
         {
             if (ingredientPrefabPair.item != ingredientTypeToSpawn) continue;
+            IngredientSpawned?.Invoke();
             GameObject spawnedObject = PoolManager.Instance.Get(ingredientPrefabPair.prefab, parentContainer, spawnPoint.position, spawnPoint.rotation);
             return;
         }

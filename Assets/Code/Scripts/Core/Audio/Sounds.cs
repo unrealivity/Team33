@@ -11,6 +11,7 @@
     MunchFood,
     LuzzWalk,
     DeliverSuccess,
-    DeliverFail
+    DeliverFail,
+    IngredientSpawned
   }
 
