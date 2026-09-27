@@ -10,17 +10,21 @@ public class UIController : MonoBehaviour
     [SerializeField] private List<ItemPrefabPair> foodTypeIconPrefabPairs;
     [SerializeField] private GameObject foodIconContainer;
     private List<ItemPrefabPair> _activeRecipes = new();
+    private OrderBacklog _backlog;
+    
     private void Awake()
     {
-        OrderBacklog.Instance.OrderAdded += AddToToDoList;
-        OrderBacklog.Instance.OrderFulfilled += SuccessRemoveFromToDoList;
-        OrderBacklog.Instance.OrderFailed += FailedRemoveFromToDoList;
+        _backlog = OrderBacklog.Instance;
+        _backlog.OrderAdded += AddToToDoList;
+        _backlog.OrderFulfilled += SuccessRemoveFromToDoList;
+        _backlog.OrderFailed += FailedRemoveFromToDoList;
     }
     private void OnDestroy()
     {
-        OrderBacklog.Instance.OrderAdded -= AddToToDoList;
-        OrderBacklog.Instance.OrderFulfilled -= SuccessRemoveFromToDoList;
-        OrderBacklog.Instance.OrderFailed -= FailedRemoveFromToDoList;
+        if (_backlog == null) return;
+        _backlog.OrderAdded -= AddToToDoList;
+        _backlog.OrderFulfilled -= SuccessRemoveFromToDoList;
+        _backlog.OrderFailed -= FailedRemoveFromToDoList;
     }
 
     private void AddToToDoList(ItemType foodType,TimedTask dishTask)
@@ -58,7 +62,10 @@ public class UIController : MonoBehaviour
 
             if (icon.TryGetComponent(out TimerVisual timerVisual))
             {   
-                timerVisual.OnFeedbackComplete += () => PoolManager.Instance.Release(icon);
+                timerVisual.OnFeedbackComplete += () =>
+                {
+                    if (PoolManager.Instance != null) PoolManager.Instance.Release(icon);
+                };
                 timerVisual.PlayFeedback(success);
             }
 

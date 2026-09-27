@@ -2,19 +2,27 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Pool;
 
+[DefaultExecutionOrder(-100)]
 public class PoolManager : MonoBehaviour
 {
     public static PoolManager Instance { get; private set; }
 
     private readonly Dictionary<GameObject, IObjectPool<GameObject>> _pools = new();
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private static void Initialize()
+    private void Awake()
     {
-        if (Instance != null) return;
-        var go = new GameObject("PoolManager");
-        Instance = go.AddComponent<PoolManager>();
-        DontDestroyOnLoad(go);
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
+    
+    private void OnDestroy()
+    {
+        if (Instance != this) return;
+        Instance = null;
     }
 
     public GameObject Get(GameObject prefab, Transform parent, Vector3 position, Quaternion rotation)

@@ -17,6 +17,7 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+        if(PauseManager.IsPaused){PauseManager.TogglePause();}
         StartCoroutine(PlayGame());
     }
 

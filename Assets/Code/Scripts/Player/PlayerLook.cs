@@ -7,7 +7,6 @@ public class PlayerLook : MonoBehaviour
     private InputAction _lookAction;
     
     [Header("Look Settings")]
-    [SerializeField] private float mouseSensitivity;
     [SerializeField] private float topLimit;
     [SerializeField] private float bottomLimit;
     
@@ -30,8 +29,8 @@ public class PlayerLook : MonoBehaviour
     private void Update()
     {
         //read mouse input
-        _mouseX = _lookAction.ReadValue<Vector2>().x * mouseSensitivity * Time.deltaTime;
-        _mouseY = _lookAction.ReadValue<Vector2>().y * mouseSensitivity * Time.deltaTime;
+        _mouseX = _lookAction.ReadValue<Vector2>().x * PlayerSettings.MouseSensitivity * Time.deltaTime;
+        _mouseY = _lookAction.ReadValue<Vector2>().y * PlayerSettings.MouseSensitivity * Time.deltaTime;
         
         //calculate vertical camera rotation
         _rotationPitch -= _mouseY;

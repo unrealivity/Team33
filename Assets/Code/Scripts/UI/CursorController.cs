@@ -6,5 +6,25 @@ public class CursorController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        PauseManager.PauseStateChanged += OnPauseStateChanged;
+    }
+    
+    private void OnDestroy()
+    {
+        PauseManager.PauseStateChanged -= OnPauseStateChanged;
+    }
+
+    private void OnPauseStateChanged(bool isPaused)
+    {
+        if (isPaused && PauseManager.PauseOwner == null)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;    
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 }

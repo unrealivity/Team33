@@ -1,21 +1,40 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
-public class OrderBacklog
+[DefaultExecutionOrder(-100)]
+public class OrderBacklog : MonoBehaviour
 { 
-    public static OrderBacklog Instance { get; } = new();
-    
-    public event Action<ItemType,TimedTask> OrderAdded;
+    public static OrderBacklog Instance { get; private set; }
+
+    public event Action<ItemType, TimedTask> OrderAdded;
     public event Action<ItemType> OrderFulfilled;
     public event Action<ItemType> OrderFailed;
-    
-    private readonly Dictionary<ItemType,Queue<TimedTask>> _pendingOrders = new();
 
-    private OrderBacklog()
+    private readonly Dictionary<ItemType, Queue<TimedTask>> _pendingOrders = new();
+    
+    private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+
         GameController.FoodAddedToBacklog += HandleOrderAdded;
         ServingCounter.FoodCollected += HandleOrderFulfilled;
         ServingCounter.FoodFailedToCollect += HandleOrderFailed;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance != this) return; // don't unsubscribe if this was a duplicate that got destroyed
+
+        GameController.FoodAddedToBacklog -= HandleOrderAdded;
+        ServingCounter.FoodCollected -= HandleOrderFulfilled;
+        ServingCounter.FoodFailedToCollect -= HandleOrderFailed;
+        Instance = null;
     }
     
     public bool IsOrdered(ItemType foodType)

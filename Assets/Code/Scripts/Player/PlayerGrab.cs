@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -33,6 +34,13 @@ public class PlayerGrab : MonoBehaviour
         _holdPoint = holdPointGameObject.transform;
 
     }
+
+    private void OnDisable()
+    {
+        _grabAction.performed -= GrabActionOnPerformed;
+        _grabAction.canceled -= GrabActionOnCanceled;
+    }
+
     private void GrabActionOnCanceled(InputAction.CallbackContext obj)
     {
         if (_objectHeldInHand != null)

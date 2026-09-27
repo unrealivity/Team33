@@ -77,7 +77,8 @@ public class PlayerInteract : MonoBehaviour
     }
     
     private void InteractPerformed(InputAction.CallbackContext ctx)
-    {
+    {   
+        if (PauseManager.IsPaused && _closestInteractable != PauseManager.PauseOwner) return;
         _closestInteractable?.Interact();
     }
 

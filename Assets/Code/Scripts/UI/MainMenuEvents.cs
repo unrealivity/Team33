@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 public class MainMenuEvents : MonoBehaviour
 {
@@ -44,11 +45,11 @@ public class MainMenuEvents : MonoBehaviour
 
     private void OnStartButtonClick(ClickEvent evt)
     {
-        Debug.Log("Start Button Clicked");
+        SceneManager.LoadScene("Main");
     }
 
     private void OnExitButtonClick(ClickEvent evt)
     {
-        Debug.Log("Exit Button Clicked");
+        Application.Quit();
     }
 }

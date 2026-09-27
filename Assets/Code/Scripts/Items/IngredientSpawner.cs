@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +16,10 @@ public class IngredientSpawner : MonoBehaviour
         GameController.FoodAddedToBacklog += SpawnIngredientsForRecipe;
     }
 
+    private void OnDisable()
+    {
+        GameController.FoodAddedToBacklog -= SpawnIngredientsForRecipe;
+    }
 
     private void SpawnIngredientsForRecipe(ItemType foodToSpawnIngredientsFor,TimedTask _task)
     {
