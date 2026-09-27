@@ -21,18 +21,11 @@ public class PlayerGrab : MonoBehaviour
 
     private Transform _holdPoint;
     private Camera _camera;
-
-    private void Awake()
-    {   
-        _grabAction = inputActionAsset.FindAction("Grab");
+    
+    private void OnEnable()
+    {
         _grabAction.performed += GrabActionOnPerformed;
         _grabAction.canceled += GrabActionOnCanceled;
-        
-        _camera = GetComponentInChildren<Camera>();
-        
-        holdPointGameObject.transform.Translate(0,0,idealDistance);
-        _holdPoint = holdPointGameObject.transform;
-
     }
 
     private void OnDisable()
@@ -40,6 +33,16 @@ public class PlayerGrab : MonoBehaviour
         _grabAction.performed -= GrabActionOnPerformed;
         _grabAction.canceled -= GrabActionOnCanceled;
     }
+    
+    private void Awake()
+    {
+        _grabAction = inputActionAsset.FindAction("Grab");
+        _camera = GetComponentInChildren<Camera>();
+
+        holdPointGameObject.transform.Translate(0, 0, idealDistance);
+        _holdPoint = holdPointGameObject.transform;
+    }
+    
 
     private void GrabActionOnCanceled(InputAction.CallbackContext obj)
     {

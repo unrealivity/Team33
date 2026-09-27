@@ -133,7 +133,7 @@ public class LuzzAnimationController : MonoBehaviour
         }
     }
     
-    
+    /*
     // TODO Löschen ist nur fürs Testen gedacht.
     private void Update()
     {
@@ -161,5 +161,6 @@ public class LuzzAnimationController : MonoBehaviour
         if (Keyboard.current.digit8Key.wasPressedThisFrame)
             Close();
     }
+    */
 }
 

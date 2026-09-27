@@ -17,6 +17,7 @@ public class LuzzBehaviorController : MonoBehaviour
         
     private bool _arrivedAtLocation;
     public static event Action<float,float ,float ,Vector3 ,float > VacuumFood;
+    public static event Action MunchFood;
     private bool _isOnTrip;
     private bool _tripQueued;
     private LuzzAnimationController _luzzAnimationController;
@@ -64,10 +65,11 @@ public class LuzzBehaviorController : MonoBehaviour
         float endTime = Time.time + duration;
 
         while (Time.time < endTime)
-        {
+        {   
+            
             _luzzAnimationController.Open();
             yield return wait;
-
+            MunchFood?.Invoke();
             _luzzAnimationController.Close();
             yield return wait;
         }

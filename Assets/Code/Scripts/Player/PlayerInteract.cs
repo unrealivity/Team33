@@ -21,14 +21,24 @@ public class PlayerInteract : MonoBehaviour
 
     private Camera _camera;
     
+    private void OnEnable()
+    {
+        _interactAction.performed += InteractPerformed;
+    }
+
+    private void OnDisable()
+    {
+        _interactAction.performed -= InteractPerformed;
+    }
+    
     private void Awake()
     {
         _interactAction = inputActionAsset.FindAction("Interact");
-        _interactAction.performed += InteractPerformed; 
-        
         _camera = GetComponentInChildren<Camera>();
     }
 
+    
+    
     private void FixedUpdate()
     {
         CheckHover();

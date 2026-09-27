@@ -29,7 +29,9 @@ public class ObjectDispenser : Station
     }
     
     private void SpawnItem()
-    {
+    {   
+        if (spawnPoint == null || parentContainer == null) return;
+        
         GameObject spawnedObject = PoolManager.Instance.Get(objectToSpawn, parentContainer, spawnPoint.position, spawnPoint.rotation);
         _dispensedIngredients.Add(spawnedObject);
     }

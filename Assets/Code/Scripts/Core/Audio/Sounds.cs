@@ -4,6 +4,13 @@
     CookingDone,
     Cutting,
     Cooking,
-    BackgroundMusic
+    BackgroundMusic,
+    EjectCookingObjects,
+    RingBell,
+    SwingDoor,
+    MunchFood,
+    LuzzWalk,
+    DeliverSuccess,
+    DeliverFail
   }
 

@@ -16,6 +16,7 @@ public class ServingCounter : Station
     [SerializeField] private ObjectDetector objectDetector;
     public static event Action<ItemType> FoodFailedToCollect;
     public static event Action<ItemType> FoodCollected;
+    public static event Action RingBell;
 
     private void Awake()
     {
@@ -27,7 +28,8 @@ public class ServingCounter : Station
 
 
     public override void Interact()
-    {
+    {   
+        RingBell?.Invoke();
         TryCollect();
     }
 
