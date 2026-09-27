@@ -10,11 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 641b398db31c8904eaa9d6b43c62bcbe, type: 3}
-  m_Name: 1xPeachJelly
+  m_Name: 3xBeanStew
   m_EditorClassIdentifier: Assembly-CSharp::Level
   dishesToBeCooked:
-  - dishToCook: 6
-    timeInSeconds: 30
+  - dishToCook: 5
+    timeInSeconds: 40
+    isTimed: 1
+  - dishToCook: 5
+    timeInSeconds: 50
+    isTimed: 1
+  - dishToCook: 5
+    timeInSeconds: 60
+    isTimed: 1
   isTimed: 1
-  timeUntilNextLevelAppears: 25
-  difficulty: 3
+  timeUntilNextLevelAppears: 53
+  difficulty: 5
