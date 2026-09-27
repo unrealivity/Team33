@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -42,7 +43,7 @@ public class GameController : MonoBehaviour
                 yield return new WaitUntil(() => !OrderBacklog.Instance.HasActiveOrders);
             }
         }
-        
+        SceneManager.LoadScene("EndScreen");
     }
     
     private IEnumerator WaitForTimeOrClear(float duration)
