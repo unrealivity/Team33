@@ -1,12 +1,30 @@
 using System.Collections.Generic;
+using UnityEngine;
 
-public class TaskManager
-{   
-    public static TaskManager Instance { get; } = new();
+[DefaultExecutionOrder(-100)]
+public class TaskManager : MonoBehaviour
+{
+    public static TaskManager Instance { get; private set; }
 
     private readonly List<TimedTask> activeTasks = new();
     private readonly List<TimedTask> pendingRemovals = new();
     private bool _isTicking;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance != this) return;
+        Instance = null;
+    }
 
     public void Tick(float deltaTime)
     {

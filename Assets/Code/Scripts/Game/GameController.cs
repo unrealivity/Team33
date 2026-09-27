@@ -23,7 +23,8 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        TaskManager.Instance.Tick(Time.deltaTime);
+        if (TaskManager.Instance != null)
+            TaskManager.Instance.Tick(Time.deltaTime);
     }
 
     private IEnumerator PlayGame()
